@@ -192,5 +192,5 @@ code {
     margin-top: -15px;
 }
 
-.site-footer { margin-top:24px; padding-top:18px; border-top:1px solid #222; color:#999; font-size:0.95rem }
+.site-footer { margin-top:24px; padding-top:18px; border-top:1px solid #222; color:#999; font-size:0.95rem; margin-bottom: 150px; }
 .site-footer a { color:#f5f5f5 }
