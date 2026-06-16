@@ -1,0 +1,117 @@
+{
+    "world_seed": 31415,
+    "version": 2726,
+    "definitions": {},
+    "pseudo_objects": {
+        "objects": []
+    },
+    "peers": {
+        "peers": []
+    },
+    "vehicle_id_counter": 102,
+    "actor_id_counter": 52,
+    "prop_id_counter": 1539,
+    "dome_id_counter": 1,
+    "item_world_id_counter": 1031,
+    "is_creative_mode": true,
+    "dead_drops": {
+        "dead_drops": [
+            {
+                "id": 1
+            },
+            {
+                "id": 2
+            },
+            {
+                "id": 3
+            },
+            {
+                "id": 4
+            },
+            {
+                "id": 5
+            },
+            {
+                "id": 6
+            },
+            {
+                "id": 7
+            },
+            {
+                "id": 8
+            },
+            {
+                "id": 9
+            },
+            {
+                "id": 10
+            },
+            {
+                "id": 11
+            },
+            {
+                "id": 12
+            },
+            {
+                "id": 13
+            },
+            {
+                "id": 14
+            },
+            {
+                "id": 15
+            },
+            {
+                "id": 16
+            },
+            {
+                "id": 17
+            },
+            {
+                "id": 18
+            },
+            {
+                "id": 19
+            },
+            {
+                "id": 20
+            },
+            {
+                "id": 21
+            },
+            {
+                "id": 22
+            },
+            {
+                "id": 23
+            },
+            {
+                "id": 24
+            },
+            {
+                "id": 25
+            },
+            {
+                "id": 26
+            },
+            {
+                "id": 27
+            },
+            {
+                "id": 28
+            },
+            {
+                "id": 29
+            },
+            {
+                "id": 30
+            },
+            {
+                "id": 31
+            },
+            {
+                "id": 32
+            }
+        ]
+    }
+}

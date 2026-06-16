@@ -1,0 +1,90 @@
+{
+    "definitions": {
+        "components": [
+            "vehicle_container"
+        ]
+    },
+    "vehicles": {
+        "vehicles": [
+            {
+                "id": 98,
+                "transform": {
+                    "m": [
+                        0.6125211119651794,
+                        1.1081004180072166e-22,
+                        -0.7904542088508606,
+                        5.787049521910237e-23,
+                        1.0,
+                        1.8502899139382015e-22,
+                        0.7904542088508606,
+                        -1.5907814342823937e-22,
+                        0.6125211119651794
+                    ],
+                    "t": [
+                        85454.934341587,
+                        149.77712051389494,
+                        55119.77630376789
+                    ]
+                },
+                "nodes": [],
+                "edges": [],
+                "plates": [],
+                "plate_paint": [],
+                "grids": [
+                    {
+                        "components": [
+                            {
+                                "def": 0,
+                                "id": 2,
+                                "colors": [
+                                    79,
+                                    79,
+                                    79,
+                                    79,
+                                    79,
+                                    79,
+                                    79,
+                                    79,
+                                    79,
+                                    79
+                                ],
+                                "pos": [
+                                    4,
+                                    6,
+                                    -4
+                                ],
+                                "items": []
+                            }
+                        ]
+                    }
+                ],
+                "electric_links": [],
+                "mechanical_links": [],
+                "liquid_links": [],
+                "gas_links": [],
+                "belt_links": [],
+                "data_links": [],
+                "loot_locations": [],
+                "creature_locations": [],
+                "motion_type": "static",
+                "flags": 7,
+                "dead_drop_id": 17
+            }
+        ]
+    },
+    "actors": {
+        "actors": []
+    },
+    "floor_items": {
+        "items": []
+    },
+    "creative_domes": {
+        "domes": []
+    },
+    "props": {
+        "props": []
+    },
+    "ropes": {
+        "ropes": []
+    }
+}

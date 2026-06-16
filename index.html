@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>AnyUnlocker</title>
+</head>
+<body>
+    <div class="hero-container">
+        <h1>AnyUnlocker</h1> <span class="subhero">Anymaker Item Unlocker</span>
+    </div>
+    
+    <div class="section">
+        <p id="status-message" class="error">Loading files from server...</p>
+        <div id="progress" style="margin-top:8px;color:#ccc"></div>
+    </div>
+
+    <div class="section" id="picker-section" style="display:none;">
+        <h3>Choose Items</h3>
+        
+        <div class="controls">
+            <div class="input-group">
+                <span class="field-label">Include items matching text:</span>
+                <input type="text" id="search-filter" placeholder="Search items" value="">
+            </div>
+            
+            <div class="input-group">
+                <span class="field-label">Exclude items matching text:</span>
+                <input type="text" id="exclude-filter" placeholder="Filter out" value="Tier -1, Decorative,Building,Furniture,Clothing,Wheel">
+            </div>
+
+            <p style="font-size: 0.85em; color: #aaa; margin: 10px 0 5px 0;">
+                <i>Warning: Tier -1 might indicate items that are not available legitimately, use at own risk.</i>
+            </p>
+            
+            <div class="button-group">
+                <button id="btn-select-all">Select All</button>
+                <button id="btn-clear-all">Clear All</button>
+            </div>
+        </div>
+
+        <p>These items will be added to the creative save you'll download:</p>
+
+        <div id="list-container" style="max-height:300px;overflow-y:auto;border:1px solid #333;padding:8px;margin:10px 0;"></div>
+        <p>Selected: <span id="selected-count">0</span> items</p>
+        <button id="btn-apply" style="padding:10px 16px;font-weight:bold;margin-top:10px;">Apply & Create ZIP</button>
+    </div>
+
+    <div class="section">
+        <h3>Download</h3>
+        <p class="download-note" id="download-note" style="display:none;">Your file is ready to download:</p>
+        <button id="btn-download-zip" disabled>Download ZIP</button>
+    </div>
+
+    <div class="section instruction-box">
+        <h3>Installation Instructions</h3>
+        <ol>
+            <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
+            <li>Type <code>%appdata%/Anymaker/saves</code> and hit <kbd>Enter</kbd>.</li>
+            <li>Extract/unzip the downloaded <code>creativeLootSave_unzip_me.zip</code> directly there.</li>
+            <li>You should see a <code>creativeLootSave</code> folder in the <code>Anymaker/saves/</code> directory.</li>
+            <li>Launch the game, load the <b>creativeLootSave</b> world, and go pick up your items!</li>
+        </ol>
+    </div>
+
+    <footer class="site-footer">
+        You can fnd the source code for this project on <a href="https://github.com/Hakorr/AnyUnlocker" target="_blank" rel="noopener noreferrer">GitHub</a>. Created for engineers.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

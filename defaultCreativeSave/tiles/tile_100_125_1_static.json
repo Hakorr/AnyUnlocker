@@ -1,0 +1,44 @@
+{
+    "definitions": {},
+    "vehicles": {
+        "vehicles": []
+    },
+    "actors": {
+        "actors": []
+    },
+    "floor_items": {
+        "items": []
+    },
+    "creative_domes": {
+        "domes": [
+            {
+                "id": 1,
+                "position": {
+                    "m": [
+                        0.0607588812193859,
+                        0.0,
+                        -0.9981524724975481,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.9981524724975481,
+                        0.0,
+                        0.0607588812193859
+                    ],
+                    "t": [
+                        83949.0,
+                        4.3,
+                        55851.0
+                    ]
+                },
+                "last_players_present_time": 2725
+            }
+        ]
+    },
+    "props": {
+        "props": []
+    },
+    "ropes": {
+        "ropes": []
+    }
+}
