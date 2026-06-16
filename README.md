@@ -1,6 +1,6 @@
 # AnyUnlocker
 
-Unlock Anymaker vehicle items with ease. Open the GUI, pick items you want, download the save file, load the save, unlock your items.
+Unlock Anymaker vehicle items with ease. Pick items you want, download the save file, load the save & unlock your items. You'll save at least 50 hours of your precious life by doing this.
 
 ![Loot](media/loot.png)
 
