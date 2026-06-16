@@ -1,8 +1,24 @@
 # AnyUnlocker
 
-Unlock Anymaker vehicle items with ease. Pick items you want, download the save file, load the save & unlock your items. You'll save at least 50 hours of your precious life by doing this.
+Unlock Anymaker vehicle items with ease. Pick items you want, download the save file, load the save & unlock your items. You'll save at least 50 hours of your precious life by doing this. **[Open AnyUnlocker](https://hakorr.github.io/AnyUnlocker/)** to get started!
 
 ![Loot](media/loot.png)
+
+## Getting Started
+
+1. Open **[AnyUnlocker](https://hakorr.github.io/AnyUnlocker/)** & download modded save.
+
+2. Press <kbd>WIN</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.
+
+3. Type `%appdata%/Anymaker/saves` and press <kbd>Enter</kbd>.
+
+4. Extract/unzip the downloaded `creativeLootSave_unzip_me.zip` directly into that folder.
+
+5. You should see a `creativeLootSave` folder inside the `Anymaker/saves/` directory.
+
+6. Launch the game, load the **creativeLootSave** world, and go pick up your items!
+
+## Philosophy
 
 I believe it's ethical to unlock the parts that you could unlock with normal gameplay anyway, you're just saving time. I don't know why Geometa expects people have unlimited time to play their game, some really talented engineers could give great bug reports, but don't bother grinding over 50 hours to get all the parts to even begin experimenting.
 
