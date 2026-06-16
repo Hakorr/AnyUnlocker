@@ -17,7 +17,51 @@ const TILES_DIR = 'defaultCreativeSave/tiles/';
 const BASE_SAVE_DIR = 'defaultCreativeSave/';
 const DUNGEONS_DIR = 'defaultCreativeSave/dungeons/';
 
-const dungeonFilenames = ['dungeon_0_entrance.json', 'dungeon_0_static.json'];
+const TILE_FILES = [
+    "tile_100_125_1_level_3.json",
+    "tile_100_125_1_static.json",
+    "tile_100_126_0_level_3.json",
+    "tile_100_126_0_static.json",
+    "tile_100_126_1_level_3.json",
+    "tile_100_127_0_static.json",
+    "tile_101_122_1_static.json",
+    "tile_101_123_0_static.json",
+    "tile_101_124_0_static.json",
+    "tile_101_124_1_static.json",
+    "tile_101_125_0_level_3.json",
+    "tile_101_125_0_static.json",
+    "tile_101_125_1_level_3.json",
+    "tile_101_125_1_static.json",
+    "tile_101_126_0_level_3.json",
+    "tile_101_126_0_static.json",
+    "tile_101_127_1_static.json",
+    "tile_101_128_0_static.json",
+    "tile_102_122_1_static.json",
+    "tile_102_123_0_static.json",
+    "tile_102_123_1_static.json",
+    "tile_102_124_0_static.json",
+    "tile_102_124_1_static.json",
+    "tile_102_125_0_static.json",
+    "tile_102_125_1_static.json",
+    "tile_102_126_1_static.json",
+    "tile_103_123_0_static.json",
+    "tile_103_123_1_static.json",
+    "tile_103_124_0_static.json",
+    "tile_103_124_1_static.json",
+    "tile_103_125_0_static.json",
+    "tile_103_125_1_static.json",
+    "tile_103_126_0_static.json",
+    "tile_103_127_0_static.json",
+    "tile_104_122_0_static.json",
+    "tile_104_124_0_static.json",
+    "tile_104_124_1_static.json",
+    "tile_104_125_0_static.json",
+    "tile_104_126_0_static.json"
+];
+const dungeonFilenames = [
+    'dungeon_0_entrance.json',
+    'dungeon_0_static.json'
+];
 const tileToModify = 'tile_101_125_0_level_3.json';
 const selectedIds = new Set();
 
@@ -53,35 +97,8 @@ function setProgress(msg) {
     progressEl.textContent = msg;
 }
 
-function parseDirectoryListing(html, baseUrl) {
-    const urls = [];
-    const hrefRe = /href\s*=\s*["']([^"']*tile[^"']*\.json)["']/gi;
-    let m;
-    while((m = hrefRe.exec(html)) !== null) {
-        let href = m[1];
-        if(!href.startsWith('http') && !href.startsWith('/')) {
-            href = baseUrl + href;
-        }
-        urls.push(href);
-    }
-    return Array.from(new Set(urls));
-}
-
-async function listTileFiles() {
-    // Try directory listing HTML
-    try {
-        const txt = await fetchText(TILES_DIR);
-        const urls = parseDirectoryListing(txt, TILES_DIR);
-        if(urls.length) return urls;
-    } catch (e) {}
-
-    // Try index.json
-    try {
-        const idx = await fetchJson(TILES_DIR + 'index.json');
-        if(Array.isArray(idx)) return idx.map(p => TILES_DIR + p);
-    } catch (e) {}
-
-    return [];
+function listTileFiles() {
+    return TILE_FILES.map(file => TILES_DIR + file);
 }
 
 function findItemNamesFromCompDefs(jsonObj, excludeClasses = [], isComp = true) {
