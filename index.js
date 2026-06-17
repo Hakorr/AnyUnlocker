@@ -299,13 +299,19 @@ async function initAndShowPicker() {
         }
 
         setProgress(`Found ${urls.length} tiles. Loading...`);
-        for(const url of urls) {
+
+        for(let i = 0; i < urls.length; i++) {
+            const url = urls[i];
+            const name = url.split('/').pop();
+
+            setProgress(`Loading tile ${i + 1}/${urls.length}: ${name}`);
+
             try {
                 const tileData = await fetchJson(url);
-                const name = url.split('/').pop();
                 tileFiles[name] = tileData;
             } catch (e) {
                 console.warn(`Failed to load ${url}:`, e);
+                setProgress(`Failed tile ${i + 1}/${urls.length}: ${name}`);
             }
         }
 
