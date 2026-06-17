@@ -367,11 +367,11 @@ function getItemDisplayText(item) {
 
     let displayStr = formattedId;
     
-    if(item.tier !== null) {
-        displayStr += ` (T${item.tier})`;
-    }
-    
     const tags = [];
+
+    if(item.tier !== null) {
+        tags.push(`Tier ${item.tier}`);
+    }
     
     if(item.category !== null && item.category !== undefined && item.category.trim() !== '') {
         tags.push(item.category);
