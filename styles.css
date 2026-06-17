@@ -28,6 +28,8 @@ h1 {
 h3 {
     font-size: 1.25rem;
     font-weight: 700;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #333;
 }
 i {
     font-size: 0.8rem;
