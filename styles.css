@@ -23,10 +23,37 @@
 html {
     display: flex;
     justify-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #121212;
+    background: linear-gradient(
+        135deg,
+        #000000 25%,
+        #0a0a0a 25%,
+        #0a0a0a 50%,
+        #000000 50%,
+        #000000 75%,
+        #0a0a0a 75%,
+        #0a0a0a
+    );
+    background-size: 40px 40px;
+    animation: move 4s linear infinite;
+}
+
+@keyframes move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 40px;
+  }
 }
 
 body {
     background: #000;
+    border-left: 1px solid #1c1c1c;
+    border-right: 1px solid #1c1c1c;
     color: #f5f5f5;
     margin: 0;
     padding: 28px;
@@ -92,10 +119,15 @@ input[type="text"] {
     box-sizing: border-box;
 }
 
+#status-message {
+    font-size: 15px;
+}
+
 .item-row {
     padding: 6px 8px;
     cursor: pointer;
     border-bottom: 1px solid #111;
+    font-size: 13.5px;
 }
 .item-row:hover { background: #0f0f0f }
 .item-row.selected { background: #4fb173; color: #fff }
