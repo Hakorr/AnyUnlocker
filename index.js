@@ -278,7 +278,7 @@ function buildItems(tileJson, componentDefs, cfg = {}) {
 
 async function initAndShowPicker() {
     try {
-        setStatus('Loading definitions...');
+        setStatus('Loading default creative map...');
         const [vehicleData, clothingData] = await Promise.all([
             fetchJson(DEF_PATH),
             fetchJson(CLOTHING_DEF_PATH).catch(e => {
@@ -350,7 +350,7 @@ async function initAndShowPicker() {
 
         renderItemList(allItems, searchFilter.value);
 
-        setStatus('Loaded map successfully. Select components to add.');
+        setStatus('Loaded map successfully. Select items to add.');
         setProgress('');
         pickerSection.style.display = 'block';
     } catch (err) {
@@ -451,7 +451,7 @@ btnClearAll.addEventListener('click', () => {
 
 btnApply.addEventListener('click', async () => {
     if(selectedIds.size === 0) {
-        setStatus('Please select at least one component.', true);
+        setStatus('Please select at least one item.', true);
         return;
     }
 
