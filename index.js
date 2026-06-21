@@ -350,7 +350,7 @@ async function initAndShowPicker() {
 
         renderItemList(allItems, searchFilter.value);
 
-        setStatus('Loaded map successfully. Select items to add.');
+        setStatus('Loaded map! Select items to add.');
         setProgress('');
         pickerSection.style.display = 'block';
     } catch (err) {
