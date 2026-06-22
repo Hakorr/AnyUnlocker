@@ -33,10 +33,40 @@ function encodeBase32(bytes) {
     return out;
 }
 
+function decodeBase32(str) {
+    let bits = 0;
+    let value = 0;
+    const out = [];
+
+    for(const char of str) {
+        const idx = ALPHABET.indexOf(char);
+        if (idx === -1) continue;
+
+        value |= idx << bits;
+        bits += 5;
+
+        while(bits >= 8) {
+            out.push(value & 255);
+            value >>= 8;
+            bits -= 8;
+        }
+    }
+
+    return new Uint8Array(out);
+}
+
 function encode(str, keyStr) {
     const data = new TextEncoder().encode(str);
     const key = new TextEncoder().encode(keyStr);
 
     const xored = xor(data, key);
     return encodeBase32(xored);
+}
+
+function decode(str, keyStr) {
+    const xored = decodeBase32(str);
+    const key = new TextEncoder().encode(keyStr);
+    const data = xor(xored, key);
+
+    return new TextDecoder().decode(data);
 }

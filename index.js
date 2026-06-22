@@ -23,6 +23,12 @@ const bgMusic = document.getElementById('bgMusic');
 const welcomeVocal = document.getElementById('welcomeVocal');
 const includedItemsText = document.getElementById('included-items-text');
 const includedItemsSection = document.getElementById('included-items-section');
+const unlockToolSection = document.getElementById('unlocks-tools-section');
+const unlocksToolBtn = document.getElementById('unlocks-tool-btn');
+const toolSteamID64 = document.getElementById('tool-steamid64');
+const toolInput = document.getElementById('tool-input');
+const toolOutput = document.getElementById('tool-output');
+const toolWarning = document.getElementById('tool-warning');
 
 const DEF_PATH = 'defs/vehicle_component_definitions.json';
 const CLOTHING_DEF_PATH = 'defs/inventory_definitions.json';
@@ -669,7 +675,7 @@ steamInput.addEventListener('change', () => {
     encryptAndDownload(value);
 });
 
-document.getElementById("clearCacheBtn").addEventListener("click", async () => {
+document.getElementById("clear-cache-btn").addEventListener("click", async () => {
     localStorage.clear();
     sessionStorage.clear();
 
@@ -692,4 +698,60 @@ loadMapBtn.addEventListener('click', () => {
     initAndShowPicker();
     mainMenu.style.display = 'none';
     statusSection.classList.remove('hidden');
+});
+
+unlocksToolBtn.addEventListener('click', () => {
+    mainMenu.style.display = 'none';
+    unlockToolSection.classList.remove('hidden');
+});
+
+let toolSteamID = 0;
+
+toolSteamID64.addEventListener('input', (event) => {
+    const steamID = Number(event.target.value);
+
+    if(!steamID) {
+        toolOutput.value = 'Error: Please input proper SteamID64!';
+        console.warn('No')
+        return;
+    }
+
+    toolSteamID = steamID;
+    toolInputChanged();
+});
+
+function toolInputChanged() {
+    const inputText = toolInput.value;
+
+    if(typeof toolSteamID !== 'number') {
+        toolOutput.value = 'Error: Please input SteamID64!';
+        return;
+    }
+
+    if(!inputText) {
+        toolOutput.value = '';
+        return;
+    }
+
+    try {
+        JSON.parse(inputText);
+        toolOutput.value = encode(inputText, toolSteamID);
+        toolWarning.classList.add('hidden');
+    } catch (e) {
+        const decoded = decode(inputText, toolSteamID);
+        try {
+            const parsed = JSON.parse(decoded);
+            toolOutput.value = JSON.stringify(parsed, null, 4);
+        } catch (jsonError) {
+            toolOutput.value = decoded;
+        }
+        toolWarning.classList.remove('hidden');
+    }
+
+    toolOutput.style.height = 'auto';
+    toolOutput.style.height = (toolOutput.scrollHeight + 5) + 'px';
+}
+
+toolInput.addEventListener('input', (event) => {
+    toolInputChanged();
 });

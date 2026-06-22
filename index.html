@@ -29,7 +29,8 @@
 
     <div class="section" id="main-menu">
         <button id="load-map-button">Load map & Unlock items</button>
-        <button id="clearCacheBtn">Clear site data</button>
+        <button id="unlocks-tool-btn">Unlocks.txt Tools</button>
+        <button id="clear-cache-btn">Clear Data</button>
     </div>
 
     <div class="section" id="picker-section" style="display:none;">
@@ -91,6 +92,33 @@
         <p class="download-note" id="download-note" style="display:none;">Thank you for using AnyUnlocker! ❤️<br><br>Please read the instructions below before downloading.</p>
         <button id="btn-download-zip" disabled>Download file</button>
         <small>& Join the discussion on <a href="https://www.reddit.com/r/AnyMaker/comments/1u7smcj/how_to_unlock_all_items_heres_how/" target="_blank" rel="noopener noreferrer">Reddit</a>!</small>
+    </div>
+
+    <div class="section hidden" id="unlocks-tools-section">
+        <h3>Encode & Decode Unlocks.txt</h3>
+
+        <p><kbd>CTRL</kbd> + <kbd>R</kbd>, type <code>%appdata%/Anymaker/unlocks.txt</code> and press <kbd>Enter</kbd>.</p><br>
+
+        <p>Enter <a href="https://store.steampowered.com/account/" target="_blank"><strong>SteamID64</strong></a>:</p>
+        <input
+            type="text"
+            id="tool-steamid64"
+            name="steamid64"
+            placeholder="7656119XXXXXXXXXX"
+            inputmode="numeric"
+            pattern="[0-9]{17}"
+        >
+        <div>
+            <div>
+                <p>Input string:</p>
+                <textarea id="tool-input" name="toolInput" rows="25" cols="150"></textarea>
+            </div>
+            <p class="hidden" id="tool-warning">(Input is not valid JSON, assuming it's encoded/encrypted data.)</p>
+            <div>
+                <p>Output string:</p>
+                <textarea id="tool-output" name="toolOutput" rows="25" cols="150"></textarea>
+            </div>
+        </div>
     </div>
 
     <div class="section hidden" id="included-items-section">
