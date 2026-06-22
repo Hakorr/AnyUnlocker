@@ -458,13 +458,14 @@ async function initAndShowPicker() {
         pickerSection.style.display = 'block';
         downloadSection.classList.remove('hidden');
 
-        setTimeout(() => {
-            welcomeVocal.volume = 0.8;
-            welcomeVocal.play();
-        }, 600);
-
-        bgMusic.volume = 0.4;
+        bgMusic.volume = 0.1;
         bgMusic.play();
+        welcomeVocal.volume = 0.7;
+        welcomeVocal.play();
+
+        setTimeout(() => {
+            bgMusic.volume = 0.5;
+        }, 2300);
     } catch (err) {
         console.error(err);
         setStatus('Error: ' + err.message, true);
