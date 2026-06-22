@@ -7,9 +7,14 @@ const excludeFilter = document.getElementById('exclude-filter');
 const btnSelectAll = document.getElementById('btn-select-all');
 const btnClearAll = document.getElementById('btn-clear-all');
 const btnApply = document.getElementById('btn-apply');
+const btnApplyCrypto = document.getElementById('btn-apply-crypto');
 const downloadBtn = document.getElementById('btn-download-zip');
 const downloadNote = document.getElementById('download-note');
 const selectedCount = document.getElementById('selected-count');
+const cryptoInstructions = document.getElementById('crypto-instructions');
+const mapInstructions = document.getElementById('map-instructions');
+const steamInputs = document.getElementById('steam-inputs');
+const steamInput = document.getElementById('steamid64');
 
 const DEF_PATH = 'defs/vehicle_component_definitions.json';
 const CLOTHING_DEF_PATH = 'defs/inventory_definitions.json';
@@ -18,45 +23,45 @@ const BASE_SAVE_DIR = 'defaultCreativeSave/';
 const DUNGEONS_DIR = 'defaultCreativeSave/dungeons/';
 
 const TILE_FILES = [
-    "tile_100_125_1_level_3.json",
-    "tile_100_125_1_static.json",
-    "tile_100_126_0_level_3.json",
-    "tile_100_126_0_static.json",
-    "tile_100_126_1_level_3.json",
-    "tile_100_127_0_static.json",
-    "tile_101_122_1_static.json",
-    "tile_101_123_0_static.json",
-    "tile_101_124_0_static.json",
-    "tile_101_124_1_static.json",
-    "tile_101_125_0_level_3.json",
-    "tile_101_125_0_static.json",
-    "tile_101_125_1_level_3.json",
-    "tile_101_125_1_static.json",
-    "tile_101_126_0_level_3.json",
-    "tile_101_126_0_static.json",
-    "tile_101_127_1_static.json",
-    "tile_101_128_0_static.json",
-    "tile_102_122_1_static.json",
-    "tile_102_123_0_static.json",
-    "tile_102_123_1_static.json",
-    "tile_102_124_0_static.json",
-    "tile_102_124_1_static.json",
-    "tile_102_125_0_static.json",
-    "tile_102_125_1_static.json",
-    "tile_102_126_1_static.json",
-    "tile_103_123_0_static.json",
-    "tile_103_123_1_static.json",
-    "tile_103_124_0_static.json",
-    "tile_103_124_1_static.json",
-    "tile_103_125_0_static.json",
-    "tile_103_125_1_static.json",
-    "tile_103_126_0_static.json",
-    "tile_103_127_0_static.json",
-    "tile_104_122_0_static.json",
-    "tile_104_124_0_static.json",
-    "tile_104_124_1_static.json",
-    "tile_104_125_0_static.json",
-    "tile_104_126_0_static.json"
+    'tile_100_125_1_level_3.json',
+    'tile_100_125_1_static.json',
+    'tile_100_126_0_level_3.json',
+    'tile_100_126_0_static.json',
+    'tile_100_126_1_level_3.json',
+    'tile_100_127_0_static.json',
+    'tile_101_122_1_static.json',
+    'tile_101_123_0_static.json',
+    'tile_101_124_0_static.json',
+    'tile_101_124_1_static.json',
+    'tile_101_125_0_level_3.json',
+    'tile_101_125_0_static.json',
+    'tile_101_125_1_level_3.json',
+    'tile_101_125_1_static.json',
+    'tile_101_126_0_level_3.json',
+    'tile_101_126_0_static.json',
+    'tile_101_127_1_static.json',
+    'tile_101_128_0_static.json',
+    'tile_102_122_1_static.json',
+    'tile_102_123_0_static.json',
+    'tile_102_123_1_static.json',
+    'tile_102_124_0_static.json',
+    'tile_102_124_1_static.json',
+    'tile_102_125_0_static.json',
+    'tile_102_125_1_static.json',
+    'tile_102_126_1_static.json',
+    'tile_103_123_0_static.json',
+    'tile_103_123_1_static.json',
+    'tile_103_124_0_static.json',
+    'tile_103_124_1_static.json',
+    'tile_103_125_0_static.json',
+    'tile_103_125_1_static.json',
+    'tile_103_126_0_static.json',
+    'tile_103_127_0_static.json',
+    'tile_104_122_0_static.json',
+    'tile_104_124_0_static.json',
+    'tile_104_124_1_static.json',
+    'tile_104_125_0_static.json',
+    'tile_104_126_0_static.json'
 ];
 const dungeonFilenames = [
     'dungeon_0_entrance.json',
@@ -64,6 +69,7 @@ const dungeonFilenames = [
 ];
 const tileToModify = 'tile_101_125_0_level_3.json';
 const selectedIds = new Set();
+const cachedSteamId = localStorage.getItem('steamId64');
 
 let defsJson = null;
 let clothingJson = null;
@@ -75,6 +81,7 @@ let sceneJson = null;
 let zipBlob = null;
 let isMouseDown = false;
 let shouldSelectMode = true;
+let unlockJsonText = '';
 
 async function fetchText(url) {
     const res = await fetch(url);
@@ -204,6 +211,23 @@ function updateSelectedCount() {
     selectedCount.textContent = selectedIds.size;
 }
 
+function buildUnlockJson(selectedDefs) {
+    return {
+        unlocked_items: selectedDefs.map(item => {
+            if(item.isComponent) {
+                return {
+                    definition_id: "vehicle_editor_add_component",
+                    component_definition_id: item.id
+                };
+            }
+
+            return {
+                definition_id: item.id
+            };
+        })
+    };
+}
+
 function buildItems(tileJson, componentDefs, cfg = {}) {
     const cloned = JSON.parse(JSON.stringify(tileJson));
     const items = cloned.floor_items?.items;
@@ -245,7 +269,7 @@ function buildItems(tileJson, componentDefs, cfg = {}) {
 
         if(itemObj.isComponent) {
             itemData = {
-                _type: "vehicle_editor_add_component",
+                _type: 'vehicle_editor_add_component',
                 id: nextId++,
                 is_loot: true,
                 component_def: itemObj.id
@@ -449,6 +473,24 @@ btnClearAll.addEventListener('click', () => {
     updateSelectedCount();
 });
 
+btnApplyCrypto.addEventListener('click', async () => {
+    if(selectedIds.size === 0) {
+        setStatus('Please select at least one item.', true);
+        return;
+    }
+
+    if(cachedSteamId) {
+        steamInput.value = cachedSteamId;
+        encryptAndDownload(cachedSteamId);
+    } else {
+        setStatus('We need your information to encrypt the file for you.');
+        steamInputs.classList.remove('hidden');
+    }
+
+    pickerSection.style.display = 'none';
+    cryptoInstructions.classList.remove('hidden');
+});
+
 btnApply.addEventListener('click', async () => {
     if(selectedIds.size === 0) {
         setStatus('Please select at least one item.', true);
@@ -456,6 +498,7 @@ btnApply.addEventListener('click', async () => {
     }
 
     pickerSection.style.display = 'none';
+    mapInstructions.classList.remove('hidden');
 
     try {
         setStatus("Hold on, I'm zipping over here...");
@@ -522,15 +565,96 @@ btnApply.addEventListener('click', async () => {
 });
 
 downloadBtn.addEventListener('click', () => {
+    if(unlockJsonText) {
+        const blob = new Blob([unlockJsonText], {
+            type: 'text/plain;charset=utf-8'
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'unlocks.txt';
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(url);
+        return;
+    }
+
     if(!zipBlob) return;
+
     const url = URL.createObjectURL(zipBlob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'creativeLootSave_unzip_me.zip';
+
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+
     URL.revokeObjectURL(url);
+});
+
+function encryptAndDownload(key) {
+    setStatus("Hold on, I'm encrypting over here...");
+
+    const selectedDefs = allItems.filter(item => selectedIds.has(item.id));
+
+    unlockJsonText = encode(JSON.stringify(buildUnlockJson(selectedDefs)), key);
+
+    console.log('Selected items:', selectedDefs);
+    console.log('Using key:', key);
+    console.log('Generated unlocks.txt content:', unlockJsonText + '\nLength: ' + unlockJsonText.length);
+
+    setStatus('Ready to download!');
+    setProgress('');
+    downloadNote.style.display = 'block';
+    downloadBtn.disabled = false;
+
+    steamInputs.classList.add('hidden');
+}
+
+steamInput.addEventListener('change', () => {
+    const value = steamInput.value.trim();
+
+    if(value === '') {
+        setStatus('SteamID64 cannot be empty.', true);
+        return;
+    }
+
+    const isValidPattern = /^[0-9]{17}$/.test(value);
+    const hasValidPrefix = value.startsWith('7656119');
+
+    if(!isValidPattern || !hasValidPrefix) {
+        setStatus('Invalid SteamID64. Must be 17 digits and start with 7656119.', true);
+        return;
+    }
+
+    localStorage.setItem('steamId64', value);
+
+    encryptAndDownload(value);
+});
+
+document.getElementById("clearCacheBtn").addEventListener("click", async () => {
+    localStorage.clear();
+    sessionStorage.clear();
+
+    document.cookie.split(";").forEach(cookie => {
+    document.cookie = cookie
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date(0).toUTCString() + ";path=/");
+    });
+
+    if("caches" in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(key => caches.delete(key)));
+    }
+
+    alert("Site data cleared. Reloading...");
+    location.reload();
 });
 
 window.addEventListener('load', () => {

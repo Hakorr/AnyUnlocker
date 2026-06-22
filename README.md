@@ -36,4 +36,6 @@ I know this, please contribute to the code and help me! I won't promise updates,
 
 AnyUnlocker is an unofficial community-made tool. It is not affiliated with, endorsed by, sponsored by, or otherwise associated with Anymaker, Geometa, or their respective owners. This tool is provided for modding, educational, and archival purposes only.
 
+Favicon by icons8.com.
+
 ![Loot](media/loot.png)
