@@ -306,6 +306,79 @@ function buildItems(tileJson, componentDefs, cfg = {}) {
     return cloned;
 }
 
+async function applyToMap() {
+    if(selectedIds.size === 0) {
+        setStatus('Please select at least one item.', true);
+        return;
+    }
+
+    pickerSection.style.display = 'none';
+    mapInstructions.classList.remove('hidden');
+
+    try {
+        setStatus("Hold on, I'm zipping over here...");
+        const selectedDefs = allItems.filter(item => selectedIds.has(item.id));
+
+        const zip = new JSZip();
+        
+        const rootFolder = zip.folder('creativeLootSave');
+        const tilesFolder = rootFolder.folder('tiles');
+        const dungeonsFolder = rootFolder.folder('dungeons');
+
+        // 1. Process and package the tile files
+        let count = 0;
+        const totalTiles = Object.keys(tileFiles).length;
+
+        for(const [tileName, tileData] of Object.entries(tileFiles)) {
+            setProgress(`Processing tiles ${++count}/${totalTiles}: ${tileName}`);
+            
+            let outputData;
+            if(tileName === tileToModify) {
+                outputData = buildItems(tileData, selectedDefs);
+            } else {
+                outputData = tileData;
+            }
+            
+            const jsonString = JSON.stringify(outputData);
+            const fileBlob = new Blob([jsonString], { type: 'application/json' });
+            tilesFolder.file(tileName, fileBlob);
+        }
+
+        // 2. Package meta.json into creativeLootSave/
+        if(metaJson) {
+            const metaBlob = new Blob([JSON.stringify(metaJson)], { type: 'application/json' });
+            rootFolder.file('meta.json', metaBlob);
+        }
+
+        // 3. Package scene.json into creativeLootSave/
+        if(sceneJson) {
+            const sceneBlob = new Blob([JSON.stringify(sceneJson)], { type: 'application/json' });
+            rootFolder.file('scene.json', sceneBlob);
+        }
+
+        // 4. Package dungeon files into creativeLootSave/dungeons/
+        for(const [dungeonName, dungeonData] of Object.entries(dungeonFiles)) {
+            const dungeonBlob = new Blob([JSON.stringify(dungeonData)], { type: 'application/json' });
+            dungeonsFolder.file(dungeonName, dungeonBlob);
+        }
+
+        setProgress('Generating ZIP file...');
+        
+        zipBlob = await zip.generateAsync({ 
+            type: 'blob',
+            compression: 'STORE' 
+        });
+        
+        setStatus('Ready to download!');
+        setProgress('');
+        downloadNote.style.display = 'block';
+        downloadBtn.disabled = false;
+    } catch (err) {
+        console.error(err);
+        setStatus('Error: ' + err.message, true);
+    }
+}
+
 async function initAndShowPicker() {
     try {
         setStatus('Loading default creative map...');
@@ -507,76 +580,7 @@ btnApplyCrypto.addEventListener('click', async () => {
 });
 
 btnApply.addEventListener('click', async () => {
-    if(selectedIds.size === 0) {
-        setStatus('Please select at least one item.', true);
-        return;
-    }
-
-    pickerSection.style.display = 'none';
-    mapInstructions.classList.remove('hidden');
-
-    try {
-        setStatus("Hold on, I'm zipping over here...");
-        const selectedDefs = allItems.filter(item => selectedIds.has(item.id));
-
-        const zip = new JSZip();
-        
-        const rootFolder = zip.folder('creativeLootSave');
-        const tilesFolder = rootFolder.folder('tiles');
-        const dungeonsFolder = rootFolder.folder('dungeons');
-
-        // 1. Process and package the tile files
-        let count = 0;
-        const totalTiles = Object.keys(tileFiles).length;
-
-        for(const [tileName, tileData] of Object.entries(tileFiles)) {
-            setProgress(`Processing tiles ${++count}/${totalTiles}: ${tileName}`);
-            
-            let outputData;
-            if(tileName === tileToModify) {
-                outputData = buildItems(tileData, selectedDefs);
-            } else {
-                outputData = tileData;
-            }
-            
-            const jsonString = JSON.stringify(outputData);
-            const fileBlob = new Blob([jsonString], { type: 'application/json' });
-            tilesFolder.file(tileName, fileBlob);
-        }
-
-        // 2. Package meta.json into creativeLootSave/
-        if(metaJson) {
-            const metaBlob = new Blob([JSON.stringify(metaJson)], { type: 'application/json' });
-            rootFolder.file('meta.json', metaBlob);
-        }
-
-        // 3. Package scene.json into creativeLootSave/
-        if(sceneJson) {
-            const sceneBlob = new Blob([JSON.stringify(sceneJson)], { type: 'application/json' });
-            rootFolder.file('scene.json', sceneBlob);
-        }
-
-        // 4. Package dungeon files into creativeLootSave/dungeons/
-        for(const [dungeonName, dungeonData] of Object.entries(dungeonFiles)) {
-            const dungeonBlob = new Blob([JSON.stringify(dungeonData)], { type: 'application/json' });
-            dungeonsFolder.file(dungeonName, dungeonBlob);
-        }
-
-        setProgress('Generating ZIP file...');
-        
-        zipBlob = await zip.generateAsync({ 
-            type: 'blob',
-            compression: 'STORE' 
-        });
-        
-        setStatus('Ready to download!');
-        setProgress('');
-        downloadNote.style.display = 'block';
-        downloadBtn.disabled = false;
-    } catch (err) {
-        console.error(err);
-        setStatus('Error: ' + err.message, true);
-    }
+    applyToMap(false);
 });
 
 downloadBtn.addEventListener('click', () => {
