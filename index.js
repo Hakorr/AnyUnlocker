@@ -21,6 +21,8 @@ const downloadSection = document.getElementById('download-section');
 const statusSection = document.querySelector('.status-section');
 const bgMusic = document.getElementById('bgMusic');
 const welcomeVocal = document.getElementById('welcomeVocal');
+const includedItemsText = document.getElementById('included-items-text');
+const includedItemsSection = document.getElementById('included-items-section');
 
 const DEF_PATH = 'defs/vehicle_component_definitions.json';
 const CLOTHING_DEF_PATH = 'defs/inventory_definitions.json';
@@ -74,7 +76,7 @@ const dungeonFilenames = [
     'dungeon_0_static.json'
 ];
 const tileToModify = 'tile_101_125_0_level_3.json';
-const selectedIds = new Set();
+const selectedIds = new Set(JSON.parse(localStorage.getItem('selectedIds') || '[]'));
 const cachedSteamId = localStorage.getItem('steamId64');
 
 let defsJson = null;
@@ -318,6 +320,7 @@ async function applyToMap() {
     try {
         setStatus("Hold on, I'm zipping over here...");
         const selectedDefs = allItems.filter(item => selectedIds.has(item.id));
+        localStorage.setItem('selectedIds', JSON.stringify([...selectedIds]));
 
         const zip = new JSZip();
         
@@ -514,6 +517,11 @@ function getItemDisplayText(item) {
     return displayStr;
 }
 
+function showIncludedItems() {
+    includedItemsSection.classList.remove('hidden')
+    includedItemsText.innerText = [...selectedIds].join(", ");
+}
+
 excludeFilter.addEventListener('input', () => {
     selectedIds.clear();
     renderItemList(allItems, searchFilter.value);
@@ -578,10 +586,12 @@ btnApplyCrypto.addEventListener('click', async () => {
 
     pickerSection.style.display = 'none';
     cryptoInstructions.classList.remove('hidden');
+    showIncludedItems();
 });
 
 btnApply.addEventListener('click', async () => {
     applyToMap(false);
+    showIncludedItems();
 });
 
 downloadBtn.addEventListener('click', () => {
@@ -622,6 +632,7 @@ function encryptAndDownload(key) {
     setStatus("Hold on, I'm encrypting over here...");
 
     const selectedDefs = allItems.filter(item => selectedIds.has(item.id));
+    localStorage.setItem('selectedIds', JSON.stringify([...selectedIds]));
 
     unlockJsonText = encode(JSON.stringify(buildUnlockJson(selectedDefs)), key);
 

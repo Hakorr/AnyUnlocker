@@ -14,6 +14,15 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Hubot Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: expanded;
+    src: url('fonts/HubotSansExpanded-Light.woff2') format('woff2');
+    font-display: swap;
+}
+
 /* Base */
 * {
     box-sizing: border-box;
@@ -24,6 +33,13 @@
 h1 {
     font-size: 2rem;
     font-weight: 900;
+    margin: 0;
+}
+.h1-container {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    margin-bottom: 20px;
 }
 h3 {
     font-size: 1.25rem;
@@ -86,6 +102,8 @@ body {
 
 #load-map-button {
     border: 1px solid #7ad39a;
+    font-weight: 900;
+    color: #7ad39a;
 }
 
 body, input, button, select, textarea {
