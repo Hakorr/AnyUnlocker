@@ -469,12 +469,12 @@ async function initAndShowPicker() {
 
         bgMusic.volume = 0.1;
         bgMusic.play();
-        welcomeVocal.volume = 0.7;
+        welcomeVocal.volume = 0.6;
         welcomeVocal.play();
 
         setTimeout(() => {
             bgMusic.volume = 0.5;
-        }, 2300);
+        }, 2000);
     } catch (err) {
         console.error(err);
         setStatus('Error: ' + err.message, true);
