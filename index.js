@@ -97,6 +97,12 @@ let isMouseDown = false;
 let shouldSelectMode = true;
 let unlockJsonText = '';
 
+const savedSearch = localStorage.getItem('searchFilterValue');
+if(savedSearch !== null) searchFilter.value = savedSearch;
+
+const savedExclude = localStorage.getItem('excludeFilterValue');
+if(savedExclude !== null) excludeFilter.value = savedExclude;
+
 async function fetchText(url) {
     const res = await fetch(url);
     if(!res.ok) throw new Error(`${url} -> ${res.status}`);
@@ -528,15 +534,17 @@ function showIncludedItems() {
     includedItemsText.innerText = [...selectedIds].join(", ");
 }
 
-excludeFilter.addEventListener('input', () => {
+excludeFilter.addEventListener('input', (e) => {
     selectedIds.clear();
     renderItemList(allItems, searchFilter.value);
     updateSelectedCount();
+    localStorage.setItem('excludeFilterValue', e.target.value);
 });
 
 searchFilter.addEventListener('input', (e) => {
     renderItemList(allItems, e.target.value);
     updateSelectedCount();
+    localStorage.setItem('searchFilterValue', e.target.value);
 });
 
 btnSelectAll.addEventListener('click', () => {
