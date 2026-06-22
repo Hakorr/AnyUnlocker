@@ -15,6 +15,12 @@ const cryptoInstructions = document.getElementById('crypto-instructions');
 const mapInstructions = document.getElementById('map-instructions');
 const steamInputs = document.getElementById('steam-inputs');
 const steamInput = document.getElementById('steamid64');
+const loadMapBtn = document.getElementById('load-map-button');
+const mainMenu = document.getElementById('main-menu');
+const downloadSection = document.getElementById('download-section');
+const statusSection = document.querySelector('.status-section');
+const bgMusic = document.getElementById('bgMusic');
+const welcomeVocal = document.getElementById('welcomeVocal');
 
 const DEF_PATH = 'defs/vehicle_component_definitions.json';
 const CLOTHING_DEF_PATH = 'defs/inventory_definitions.json';
@@ -377,6 +383,15 @@ async function initAndShowPicker() {
         setStatus('Loaded map! Select items to add.');
         setProgress('');
         pickerSection.style.display = 'block';
+        downloadSection.classList.remove('hidden');
+
+        setTimeout(() => {
+            welcomeVocal.volume = 0.8;
+            welcomeVocal.play();
+        }, 1200);
+
+        bgMusic.volume = 0.4;
+        bgMusic.play();
     } catch (err) {
         console.error(err);
         setStatus('Error: ' + err.message, true);
@@ -657,6 +672,8 @@ document.getElementById("clearCacheBtn").addEventListener("click", async () => {
     location.reload();
 });
 
-window.addEventListener('load', () => {
+loadMapBtn.addEventListener('click', () => {
     initAndShowPicker();
+    mainMenu.style.display = 'none';
+    statusSection.classList.remove('hidden');
 });

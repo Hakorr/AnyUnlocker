@@ -10,15 +10,22 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
+    <audio id="bgMusic" preload="auto"><source src="sounds/music.mp3" type="audio/mpeg"></audio>
+    <audio id="welcomeVocal" preload="auto"><source src="sounds/welcome.mp3" type="audio/mpeg"></audio>
 </head>
 <body>
     <div class="hero-container">
         <h1><a href="/AnyUnlocker/">AnyUnlocker</a></h1> <span class="subhero">Anymaker Item Unlocker</span>
     </div>
     
-    <div class="section status-section">
-        <p id="status-message" class="error">Loading files from server...</p>
+    <div class="section hidden status-section">
+        <p id="status-message" class="success">Welcome to AnyUnlocker!</p>
         <div id="progress" style="margin-top:8px;color:#ccc"></div>
+    </div>
+
+    <div class="section" id="main-menu">
+        <button id="load-map-button">Load map & Unlock items</button>
+        <button id="clearCacheBtn">Clear site data</button>
     </div>
 
     <div class="section" id="picker-section" style="display:none;">
@@ -69,7 +76,7 @@
         >
     </div>
 
-    <div class="section">
+    <div class="section hidden" id="download-section">
         <h3>Download</h3>
         <p class="download-note" id="download-note" style="display:none;">Thank you for using AnyUnlocker! ❤️<br><br>Please read the instructions below before downloading.</p>
         <button id="btn-download-zip" disabled>Download file</button>
@@ -104,7 +111,6 @@
     </div>
 
     <footer class="site-footer">
-        <button id="clearCacheBtn">Clear site data</button>
         <p>You can find the source code for this project on <a href="https://github.com/Hakorr/AnyUnlocker" target="_blank" rel="noopener noreferrer">GitHub</a>. Created for engineers.</p>
     </footer>
 
