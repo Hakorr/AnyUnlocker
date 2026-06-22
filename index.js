@@ -388,7 +388,7 @@ async function initAndShowPicker() {
         setTimeout(() => {
             welcomeVocal.volume = 0.8;
             welcomeVocal.play();
-        }, 1000);
+        }, 600);
 
         bgMusic.volume = 0.4;
         bgMusic.play();
