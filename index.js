@@ -29,6 +29,7 @@ const toolSteamID64 = document.getElementById('tool-steamid64');
 const toolInput = document.getElementById('tool-input');
 const toolOutput = document.getElementById('tool-output');
 const toolWarning = document.getElementById('tool-warning');
+const tierStatsEl = document.getElementById('tier-stats');
 
 const DEF_PATH = 'defs/vehicle_component_definitions.json';
 const CLOTHING_DEF_PATH = 'defs/inventory_definitions.json';
@@ -84,6 +85,7 @@ const dungeonFilenames = [
 const tileToModify = 'tile_101_125_0_level_3.json';
 const selectedIds = new Set(JSON.parse(localStorage.getItem('selectedIds') || '[]'));
 const cachedSteamId = localStorage.getItem('steamId64');
+const itemById = new Map();
 
 let defsJson = null;
 let clothingJson = null;
@@ -229,6 +231,7 @@ window.addEventListener('mouseup', () => {
 
 function updateSelectedCount() {
     selectedCount.textContent = selectedIds.size;
+    updateTierStats();
 }
 
 function buildUnlockJson(selectedDefs) {
@@ -466,6 +469,9 @@ async function initAndShowPicker() {
 
         allItems = [...vehicleComponents, ...clothingComponents];
 
+        itemById.clear();
+        allItems.forEach(item => itemById.set(item.id, item));
+
         renderItemList(allItems, searchFilter.value);
 
         setStatus('Loaded map! Select items to add.');
@@ -485,6 +491,67 @@ async function initAndShowPicker() {
         console.error(err);
         setStatus('Error: ' + err.message, true);
     }
+}
+
+function updateTierStats() {
+    const counts = {
+        "-1": 0,
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "none": 0
+    };
+
+    for(const id of selectedIds) {
+        const item = itemById.get(id);
+        if(!item) continue;
+
+        const tier = item.tier;
+
+        if(tier == null) {
+            counts["none"]++;
+        } else if(tier === -1) {
+            counts["-1"]++;
+        } else if(typeof tier === "number" && tier >= 0 && tier <= 5) {
+            counts[String(tier)]++;
+        }
+    }
+
+    const max = {
+        "-1": 19,
+        "4": 20,
+        "5": 20
+    };
+
+    const box = (label, value, limit = null) => {
+        const over = limit !== null && value > limit;
+        return `
+            <div class="tier-box ${over ? 'overlimit' : ''}">
+                <div class="tier-label">${label}</div>
+                <div>${value} / ${limit ?? "∞"}</div>
+                ${over && label === "-1"
+                    ? `<div class="tier-warning">
+                        You have too many Tier -1 items. Remove some.<br>
+                        You will get detected otherwise.
+                       </div>`
+                    : ""
+                }
+            </div>
+        `;
+    };
+
+    tierStatsEl.innerHTML = `
+        ${box("No Tier", counts["none"])}
+        ${box("Tier -1", counts["-1"], max["-1"])}
+        ${box("Tier 0", counts["0"])}
+        ${box("Tier 2", counts["2"])}
+        ${box("Tier 3", counts["3"])}
+        ${box("Tier 4", counts["4"], max["4"])}
+        ${box("Tier 5", counts["5"], max["5"])}
+    `;
 }
 
 function getItemDisplayText(item) {

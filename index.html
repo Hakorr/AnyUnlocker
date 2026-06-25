@@ -44,7 +44,7 @@
             
             <div class="input-group">
                 <span class="field-label">Exclude items matching text:</span>
-                <input type="text" id="exclude-filter" placeholder="Filter out" value="Tier -1,Tier 4,Tier 5,Decorative,Building,Furniture,Clothing">
+                <input type="text" id="exclude-filter" placeholder="Filter out" value="Decorative,Building,Furniture,Clothing">
             </div>
 
             <p style="font-size: 0.85em; color: #aaa; margin: 10px 0 5px 0;">
@@ -63,12 +63,16 @@
         <p>Selected: <span id="selected-count">0</span> items</p>
 
         <div class="warning-box">
-            <h5>Before you continue...</h5>
-            <p>It's still unclear which items are 'booby traps', meaning unlocking them may trigger the fish. Until this is better understood, it's recommended to unlock new items gradually as needed rather than unlocking everything at once. Use the search function to find and unlock only the items you actually need.<br><br>You can always come back here to unlock more items later! 🧡</p>
+            <h5>☝️🤓 HOLD ON! Stop riiiight theereeeee! Before you continue...</h5>
+            <div id="tier-stats" class="tier-stats"></div>
+            <p>
+            Make sure no item tier exceeds its limit. These values are reported to the developers (by the game, not us obviously), and exceeding them may trigger detection, resulting in removal from testing. These limits are currently known to cause the “fish” detection event if violated.<br><br>
+            Limits may change in future updates, so it's best to only unlock the items you actually need. :)
+            </p>
         </div>
 
-        <button id="btn-apply" style="padding:10px 16px;font-weight:bold;margin-top:10px;">Apply to map (Reliable method)</button>
         <button id="btn-apply-crypto" style="padding:10px 16px;font-weight:bold;margin-top:10px;">Apply to unlocks.txt (Fast method)</button>
+        <button id="btn-apply" style="padding:10px 16px;font-weight:bold;margin-top:10px;">Apply to map (Slow, but reliable method)</button>
     </div>
 
     <div class="section hidden" id="steam-inputs">
@@ -130,6 +134,7 @@
         <h3>Installation Instructions</h3>
         <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
         <ol>
+            <li>FULLY CLOSE YOUR GAME!</li>
             <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
             <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
             <li>Open or create <code>/saves</code> folder.</li>
@@ -144,6 +149,7 @@
         <h3>Installation Instructions</h3>
         <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
         <ol>
+            <li>FULLY CLOSE YOUR GAME!</li>
             <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
             <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
             <li>Replace the <code>unlocks.txt</code> file with the one you downloaded.</li>

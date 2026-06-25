@@ -317,8 +317,42 @@ h1 a {
     padding: 10px 20px 20px 20px;
     margin: 10px;
     border: 1px solid orange;
-    border-radius: 2px;
+    border-radius: 4px;
 }
 .warning-box h5 {
     margin-bottom: 5px;
+}
+
+.tier-stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.tier-box {
+    flex: 1;
+    min-width: 90px;
+    padding: 6px 8px;
+    border: 1px solid #333;
+    background: #111;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.tier-box.overlimit {
+    border-color: red;
+    color: #ff4d4d;
+    background: rgb(255 0 0 / 5%);
+}
+
+.tier-label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.tier-warning {
+    font-size: 11px;
+    color: #ff4d4d;
+    margin-top: 4px;
 }
