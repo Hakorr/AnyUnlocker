@@ -483,7 +483,7 @@ async function initAndShowPicker() {
         bgMusic.play();
  
         setTimeout(() => {
-            welcomeVocal.volume = 0.8;
+            welcomeVocal.volume = 0.85;
             welcomeVocal.playbackRate = 0.85;
             welcomeVocal.play();
         }, 100);
