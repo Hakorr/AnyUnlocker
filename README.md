@@ -3,11 +3,9 @@
 > [!WARNING]
 > This may result in you getting banned or removed from testing, so use at your own risk.
 
-Unlock Anymaker items with ease. Reverse engineered unlocks.txt lets you unlock your items instantly without picking them up one by one!
+Unlock Anymaker items with ease. [Open AnyUnlocker](https://hakorr.github.io/AnyUnlocker/) to get started!
 
-<img width="1323" height="921" alt="image" src="https://github.com/user-attachments/assets/a6d2657b-91d9-4897-bab2-88468a1c2c61" />
-
-### [Open AnyUnlocker](https://hakorr.github.io/AnyUnlocker/) to get started!
+![Loot](media/loot.png)
 
 ## Doesn't this brea-...
 
@@ -19,8 +17,14 @@ AnyUnlocker does not bypass any of the game's own restrictions. It simply gives 
 
 <img width="914" height="718" alt="image" src="https://github.com/user-attachments/assets/1e6c14ca-f836-413a-a664-7c4723667476" />
 
+## Select patterns
+
+<img width="480" height="456" alt="image" src="https://github.com/user-attachments/assets/59aa9228-4ee2-47d0-8e53-b104c42dab3e" />
+
+## Multiple ways to unlock
+
+<img width="929" height="144" alt="image" src="https://github.com/user-attachments/assets/6508812a-ffd6-4fde-85b1-385bb221594a" />
+
 ---
 
 AnyUnlocker is an unofficial community-made tool. It is not affiliated with, endorsed by, sponsored by, or otherwise associated with Anymaker, Geometa, or their respective owners. This tool is provided for modding, educational, and archival purposes only. Favicon by icons8.com.
-
-![Loot](media/loot.png)
