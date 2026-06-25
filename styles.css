@@ -92,6 +92,7 @@ body {
     min-height: 100vh;
     border-left: 2px solid rgba(146, 146, 146, 0.2);
     border-right: 2px solid rgba(146, 146, 146, 0.2);
+    min-width: 40vw;
 }
 
 #main-menu {
@@ -173,7 +174,7 @@ input[type="text"] {
     width: 100%;
     box-sizing: border-box;
 }
-input  {
+input, select {
     font-size: 15px;
 }
 
@@ -201,7 +202,43 @@ small * {
 
 .controls { display:flex; gap:8px; flex-wrap:wrap }
 
-input[type="text"] { padding:8px 10px; border-radius:3px; border:1px solid #333; background:#050505; color:#eee }
+input[type="text"],
+select {
+    padding: 8px 10px;
+    border-radius: 3px;
+    border: 1px solid #333;
+    background: #050505;
+    color: #eee;
+}
+
+select {
+    cursor: pointer;
+}
+
+#crypt-main-output {
+    font-size: 13px;
+    color: #7ad39a;
+    font-family: 'Hubot Sans';
+    font-style: italic;
+}
+#btn-apply-crypto {
+    border: 1px solid grey;
+    width: 100%;
+    margin-top: 50px;
+}
+#btn-apply {
+    width: 100%;
+}
+
+.item-row.selected select {
+    border: 1px solid #333;
+    background: #449561;
+    color: #eee;
+}
+
+.item-row select {
+    margin: 10px 0 0;
+}
 
 button {
     padding:8px 12px;
@@ -313,14 +350,18 @@ h1 a {
     color: #fff;
 }
 .warning-box {
-    background-color: rgb(255 188 121 / 5%);
     padding: 10px 20px 20px 20px;
     margin: 10px;
     border: 1px solid #5b5b5b;
     border-radius: 4px;
+    border-bottom-width: 5px;
 }
 .warning-box h5 {
     margin-bottom: 5px;
+}
+
+button, input, select {
+    border-bottom-width: 5px !important;
 }
 
 .tier-stats {
@@ -338,6 +379,10 @@ h1 a {
     background: #111;
     font-size: 12px;
     border-radius: 4px;
+    border-bottom-width: 5px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .tier-box.overlimit {
@@ -347,8 +392,9 @@ h1 a {
 }
 
 .tier-label {
-    font-weight: bold;
     margin-bottom: 4px;
+    opacity: 0.7;
+    font-size: 0.9rem;
 }
 
 .tier-warning {

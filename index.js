@@ -11,7 +11,6 @@ const btnApplyCrypto = document.getElementById('btn-apply-crypto');
 const downloadBtn = document.getElementById('btn-download-zip');
 const downloadNote = document.getElementById('download-note');
 const selectedCount = document.getElementById('selected-count');
-const cryptoInstructions = document.getElementById('crypto-instructions');
 const mapInstructions = document.getElementById('map-instructions');
 const steamInputs = document.getElementById('steam-inputs');
 const steamInput = document.getElementById('steamid64');
@@ -30,12 +29,71 @@ const toolInput = document.getElementById('tool-input');
 const toolOutput = document.getElementById('tool-output');
 const toolWarning = document.getElementById('tool-warning');
 const tierStatsEl = document.getElementById('tier-stats');
+const globalPatternSelect = document.getElementById('global-pattern-select');
+const cryptCopySection = document.getElementById('crypt-copy-section');
 
 const DEF_PATH = 'defs/vehicle_component_definitions.json';
 const CLOTHING_DEF_PATH = 'defs/inventory_definitions.json';
 const TILES_DIR = 'defaultCreativeSave/tiles/';
 const BASE_SAVE_DIR = 'defaultCreativeSave/';
 const DUNGEONS_DIR = 'defaultCreativeSave/dungeons/';
+
+const PATTERNS = [
+    'camo_abu_tiger_stripe',
+    'camo_desert',
+    'camo_desert_night',
+    'camo_frog_skin',
+    'camo_marpat',
+    'camo_military_ocp',
+    'camo_nwu_navy',
+    'camo_woodland',
+    'dogtooth_pattern',
+    'flat_blue',
+    'flat_bone',
+    'flat_clay_brown',
+    'flat_dark_grey',
+    'flat_dark_navy',
+    'flat_davy_grey',
+    'flat_forest_green',
+    'flat_green',
+    'flat_green_pea',
+    'flat_lava_red',
+    'flat_light_blue',
+    'flat_light_grey',
+    'flat_mineral_green',
+    'flat_mustard_yellow',
+    'flat_navy',
+    'flat_olive_green',
+    'flat_onyx_black',
+    'flat_orange',
+    'flat_pink',
+    'flat_purple',
+    'flat_red',
+    'flat_redwood',
+    'flat_saffron_yellow',
+    'flat_salmon',
+    'flat_sand',
+    'flat_steel_blue',
+    'flat_taupe_grey',
+    'flat_teal_green',
+    'flat_violet',
+    'flat_yellow',
+    'grid',
+    'grid_blue',
+    'plaid_red',
+    'plaid_simple_blue',
+    'shirt_pattern_blue',
+    'shirt_pattern_blue_red',
+    'shirt_pattern_green',
+    'shirt_pattern_rainbow',
+    'shirt_salmon_stripes_vertical',
+    'stripes_blue_horizontal',
+    'tartan_clan_campbell',
+    'tartan_clan_wallace',
+    'tartan_macleod_of_lewis',
+    'tartan_st_andrews',
+    'tartan_stewart_modern'
+];
 
 const TILE_FILES = [
     'tile_100_125_1_level_3.json',
@@ -84,9 +142,10 @@ const dungeonFilenames = [
 ];
 const tileToModify = 'tile_101_125_0_level_3.json';
 const selectedItemKeys = new Set(JSON.parse(localStorage.getItem('selectedItemKeys') || '[]'));
+const selectedPatterns = JSON.parse(localStorage.getItem('selectedPatterns') || '{}');
 const cachedSteamId = localStorage.getItem('steamId64');
 const itemByKey = new Map();
-const paintCount = 85; // i, so 84+1=85
+const paintCount = 85;
 
 let defsJson = null;
 let clothingJson = null;
@@ -99,6 +158,7 @@ let zipBlob = null;
 let isMouseDown = false;
 let shouldSelectMode = true;
 let unlockJsonText = '';
+let globalPatternValue = null;
 
 const savedSearch = localStorage.getItem('searchFilterValue');
 if(savedSearch !== null) searchFilter.value = savedSearch;
@@ -154,7 +214,14 @@ function findItemNamesFromCompDefs(jsonObj, excludeClasses = [], isComp = true) 
                 category: typeof obj.category === 'string' ? obj.category : null,
                 class: typeof obj.class === 'string' ? obj.class : null,
                 loot_group: typeof obj.loot_group === 'string' ? obj.loot_group : null,
-                isComponent: isComp
+                isComponent: isComp,
+
+                patterns: Array.isArray(obj?.patterns?.patterns)
+                    ? obj.patterns.patterns.map((p, index) => ({
+                            id: p.id,
+                            idx: index
+                        }))
+                    : []
             };
 
             if(obj.id === 'vehicle_editor_paint') {
@@ -171,6 +238,39 @@ function findItemNamesFromCompDefs(jsonObj, excludeClasses = [], isComp = true) 
     });
 
     return foundComponents;
+}
+
+function getPatternIndex(searchString) {
+    return PATTERNS.indexOf(searchString); // index 0 in game is the default pattern
+}
+
+function resolvePattern(item) {
+    if(!item.patterns?.length) return null;
+
+    const globalPatternName = String(globalPatternSelect.value);
+    const selectedPatternName = selectedPatterns[item.id];
+    const randomPatternIndex = (Math.floor(Math.random() * PATTERNS.length));
+
+    console.log(item, item.id, selectedPatternName);
+
+    if(selectedPatternName) {
+        const selectedPatternIndex = getPatternIndex(selectedPatternName);
+        console.log(selectedPatternIndex);
+
+        if(selectedPatternName === '__random__') return randomPatternIndex;
+        
+        return selectedPatternIndex;
+    }
+
+    if(!globalPatternName) return null;
+    if(globalPatternName === '__random__') return randomPatternIndex;
+
+    const globalPatternIndex = getPatternIndex(globalPatternName);
+
+    console.log('if random, then', randomPatternIndex);
+    console.log('returned', globalPatternIndex !== -1 ? globalPatternIndex : null);
+
+    return globalPatternIndex !== -1 ? globalPatternIndex : null;
 }
 
 function renderItemList(allItems, filterText = '') {
@@ -205,11 +305,45 @@ function renderItemList(allItems, filterText = '') {
         row.style.borderBottom = '1px solid #222';
         row.style.userSelect = 'none'; 
 
+        if(item.patterns?.length) {
+            const select = document.createElement('select');
+
+            select.innerHTML = `
+                <option value="">Use Default</option>
+                <option value="__random__">Random</option>
+                ${PATTERNS.map(p =>
+                    `<option value="${p}">${idToTitleCase(p)}</option>`
+                ).join('')}
+            `;
+
+            select.value = selectedPatterns[item.id] || '';
+
+            select.addEventListener('click', e => e.stopPropagation());
+
+            select.addEventListener('change', e => {
+                console.log(e.target.value);
+                selectedPatterns[item.id] = e.target.value;
+                localStorage.setItem(
+                    'selectedPatterns',
+                    JSON.stringify(selectedPatterns)
+                );
+            });
+
+            row.appendChild(document.createElement('br'));
+            row.appendChild(select);
+        }
+
         row.addEventListener('mousedown', (e) => {
+            if(e.target.tagName === 'SELECT' ||
+                e.target.tagName === 'OPTION' ||
+                e.target.closest('select')) {
+                return;
+            }
+
             isMouseDown = true;
             shouldSelectMode = !selectedItemKeys.has(getItemKey(item));
             toggleSingleRowSelection(getItemKey(item), shouldSelectMode, row);
-            e.preventDefault(); 
+            e.preventDefault();
         });
 
         row.addEventListener('mouseenter', () => {
@@ -255,16 +389,20 @@ function buildUnlockJson(selectedDefs) {
                 };
             }
 
-            if(item?.col) {
-                return {
-                    definition_id: item.id,
-                    "paint_index": item.col
-                };
-            }
-
-            return {
+            const createdItemObj = {
                 definition_id: item.id
             };
+
+            if(item?.col) createdItemObj['paint_index'] = item.col;
+
+            if(item.patterns?.length) {
+                const pattern = resolvePattern(item);
+
+                if(pattern !== null && pattern !== undefined)
+                    createdItemObj['pattern_index'] = Number(pattern) || 0;
+            }
+
+            return createdItemObj;
         })
     };
 }
@@ -323,6 +461,14 @@ function buildItems(tileJson, componentDefs, cfg = {}) {
                 id: nextId++,
                 is_loot: true
             };
+
+            if(itemObj.patterns?.length) {
+                const pattern = resolvePattern(itemObj);
+
+                if(pattern !== null && pattern !== undefined) {
+                    itemData.pattern = Number(pattern) || 0;
+                }
+            }
 
             if(itemObj?.col) itemData.col = itemObj.col;
 
@@ -400,6 +546,7 @@ async function applyToMap() {
             dungeonsFolder.file(dungeonName, dungeonBlob);
         }
 
+        downloadSection.classList.remove('hidden');
         setProgress('Generating ZIP file...');
         
         zipBlob = await zip.generateAsync({ 
@@ -515,6 +662,7 @@ async function initAndShowPicker() {
         const clothingComponents = findItemNamesFromCompDefs(clothingJson, [], false);
 
         allItems = mergeAllItems(vehicleComponents, clothingComponents);
+        populateGlobalPatternDropdown();
 
         itemByKey.clear();
         allItems.forEach(item => {
@@ -526,7 +674,6 @@ async function initAndShowPicker() {
         setStatus('Loaded map! Select items to add. ⸜(｡˃ ᵕ ˂ )⸝♡');
         setProgress('');
         pickerSection.style.display = 'block';
-        downloadSection.classList.remove('hidden');
 
         bgMusic.volume = 0.1;
         bgMusic.play();
@@ -543,6 +690,32 @@ async function initAndShowPicker() {
     } catch (err) {
         console.error(err);
         setStatus('Error: ' + err.message, true);
+    }
+}
+
+function idToTitleCase(id) {
+    return id
+        .toLowerCase()
+        .replace(/[_-]+/g, ' ')
+        .trim()
+        .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function populateGlobalPatternDropdown() {
+    globalPatternSelect.innerHTML = `
+        <option value="">Default</option>
+        <option value="__random__">Random</option>
+        ${PATTERNS.map(p =>
+            `<option value="${p}">${idToTitleCase(p)}</option>`
+        ).join('')}
+    `;
+
+    const saved = localStorage.getItem('globalPatternValue') || '';
+    globalPatternSelect.value = saved;
+
+    if(![...globalPatternSelect.options].some(o => o.value === saved)) {
+        globalPatternSelect.value = '';
+        localStorage.setItem('globalPatternValue', '');
     }
 }
 
@@ -723,42 +896,24 @@ btnApplyCrypto.addEventListener('click', async () => {
 
     if(cachedSteamId) {
         steamInput.value = cachedSteamId;
-        encryptAndDownload(cachedSteamId);
+        encryptAndShow(cachedSteamId);
     } else {
         setStatus('We need your information to encrypt the file for you.');
         steamInputs.classList.remove('hidden');
     }
 
-    pickerSection.style.display = 'none';
-    cryptoInstructions.classList.remove('hidden');
     showIncludedItems();
 });
 
 btnApply.addEventListener('click', async () => {
     applyToMap(false);
     showIncludedItems();
+    cryptCopySection.classList.add('hidden');
+
+    window.scrollTo(0, 0);
 });
 
 downloadBtn.addEventListener('click', () => {
-    if(unlockJsonText) {
-        const blob = new Blob([unlockJsonText], {
-            type: 'text/plain;charset=utf-8'
-        });
-
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'unlocks.txt';
-
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        URL.revokeObjectURL(url);
-        return;
-    }
-
     if(!zipBlob) return;
 
     const url = URL.createObjectURL(zipBlob);
@@ -773,7 +928,7 @@ downloadBtn.addEventListener('click', () => {
     URL.revokeObjectURL(url);
 });
 
-function encryptAndDownload(key) {
+function encryptAndShow(key) {
     setStatus("Hold on, I'm encrypting over here...");
 
     const selectedDefs = allItems.filter(item => selectedItemKeys.has(getItemKey(item)));
@@ -783,12 +938,19 @@ function encryptAndDownload(key) {
 
     console.log('Selected items:', selectedDefs);
     console.log('Using key:', key);
-    console.log('Generated unlocks.txt content:', unlockJsonText + '\nLength: ' + unlockJsonText.length);
+    console.log(buildUnlockJson(selectedDefs));
+    console.log(unlockJsonText);
 
-    setStatus('Ready to download!');
+    const output = document.getElementById('crypt-main-output');
+    output.value = unlockJsonText;
+
+    cryptCopySection.classList.remove('hidden');
+
+    setStatus('Ready to copy!');
     setProgress('');
-    downloadNote.style.display = 'block';
-    downloadBtn.disabled = false;
+
+    output.focus();
+    output.select();
 
     steamInputs.classList.add('hidden');
 }
@@ -811,7 +973,7 @@ steamInput.addEventListener('change', () => {
 
     localStorage.setItem('steamId64', value);
 
-    encryptAndDownload(value);
+    encryptAndShow(value);
 });
 
 document.getElementById("clear-cache-btn").addEventListener("click", async () => {
@@ -893,6 +1055,10 @@ function toolInputChanged() {
 
 toolInput.addEventListener('input', (event) => {
     toolInputChanged();
+});
+
+globalPatternSelect.addEventListener('input', () => {
+    localStorage.setItem('globalPatternValue', globalPatternSelect.value);
 });
 
 // Time for refactoring... some other day, or never because this project is short-lived anyway!

@@ -46,10 +46,6 @@
                 <span class="field-label">Exclude items matching text:</span>
                 <input type="text" id="exclude-filter" placeholder="Filter out" value="Decorative,Building,Furniture,Clothing">
             </div>
-
-            <p style="font-size: 0.85em; color: #aaa; margin: 10px 0 5px 0;">
-                <i>Warning: Tier -1 might indicate items that are not available legitimately, use at own risk.</i>
-            </p>
             
             <div class="button-group">
                 <button id="btn-select-all">Select All</button>
@@ -62,6 +58,18 @@
         <div id="list-container" style="max-height:500px;overflow-y:auto;border:1px solid #333;padding:8px;margin:10px 0;"></div>
         <p>Selected: <span id="selected-count">0</span> items</p>
 
+        <br><br>
+        <h3>Global Config</h3>
+        <div class="input-group">
+            <span class="field-label">Select pattern:</span>
+            <select id="global-pattern-select">
+                <option value="">Default</option>
+            </select>
+        </div>
+        <br><br>
+
+        <h3>Checkup & Apply</h3>
+
         <div class="warning-box">
             <div id="tier-stats" class="tier-stats"></div>
             <p>
@@ -70,7 +78,7 @@
             </p>
         </div>
 
-        <button id="btn-apply-crypto" style="padding:10px 16px;font-weight:bold;margin-top:10px;">Apply to unlocks.txt (Fast method)</button>
+        <button id="btn-apply-crypto" style="padding:20px;font-weight:bold;">Apply to unlocks.txt (Fast method)</button>
         <button id="btn-apply" style="padding:10px 16px;font-weight:bold;margin-top:10px;">Apply to map (Slow, but reliable method)</button>
     </div>
 
@@ -97,9 +105,62 @@
         <small>& Join the discussion on <a href="https://www.reddit.com/r/AnyMaker/comments/1u7smcj/how_to_unlock_all_items_heres_how/" target="_blank" rel="noopener noreferrer">Reddit</a>!</small>
     </div>
 
+    <div class="section hidden" id="crypt-copy-section">
+        <h3>Results</h3>
+        <div><span class="field-label">Unlocks.txt content:</span></div>
+        <textarea id="crypt-main-output" name="crypt-main-output" rows="25" cols="150"></textarea>
+
+         <small>Join the discussion on <a href="https://www.reddit.com/r/AnyMaker/comments/1u7smcj/how_to_unlock_all_items_heres_how/" target="_blank" rel="noopener noreferrer">Reddit</a>!</small>
+
+        <div class="instruction-box">
+            <h3>Installation Instructions</h3>
+
+            <small>
+                <b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods),
+                empty the <code>%appdata%/Anymaker/unlocks.txt</code> file before anything else!
+            </small>
+
+            <ol>
+                <li><b>Close your game. Very important!</b></li>
+
+                <li>
+                    <kbd>WIN KEY</kbd> + <kbd>R</kbd> → type <code>%appdata%\Anymaker</code> → press <kbd>Enter</kbd>.
+                </li>
+
+                <li>
+                    Open <code>unlocks.txt</code> (Notepad or double-click).
+                </li>
+
+                <li>
+                    Replace the contents with the encrypted text shown in the box.
+                </li>
+
+                <li>
+                    Save (<kbd>Ctrl</kbd> + <kbd>S</kbd>) and close the file.
+                </li>
+
+                <li>Launch the game and enjoy your new items.</li>
+
+                <li>
+                    You can't really share the encrypted <code>unlocks.txt</code>, it is tied to your Steam ID.
+                </li>
+            </ol>
+
+            <small>
+                <b>Note:</b> by default, items matching
+                "<i>Decorative, Building, Furniture, Clothing</i>" are not included!
+                You need to remove the exclusions to add them.
+            </small>
+        </div>
+    </div>
+
     <div class="section instruction-box hidden" id="map-instructions">
         <h3>Installation Instructions</h3>
-        <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
+        <small>
+            <b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods),
+            empty the <code>%appdata%/Anymaker/unlocks.txt</code> file before anything else!
+        </small>
+
         <ol>
             <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
             <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
@@ -107,21 +168,6 @@
             <li>Extract/unzip the downloaded <code>creativeLootSave_unzip_me.zip</code> to the <code>/saves</code> folder.</li>
             <li>You should see a <code>creativeLootSave</code> folder in the <code>Anymaker/saves/</code> directory.</li>
             <li>Launch the game, load the <b>creativeLootSave</b> world, and go pick up your items!</li>
-        </ol>
-        <small><b>Note:</b> by default, items matching "<i>Decorative,Building,Furniture,Clothing</i>" are not included! You need to remove the exclusions to add them.</small>
-    </div>
-
-    <div class="section instruction-box hidden" id="crypto-instructions">
-        <h3>Installation Instructions</h3>
-        <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
-        <ol>
-            <li>FULLY CLOSE YOUR GAME!</li>
-            <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
-            <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
-            <li>Replace the <code>unlocks.txt</code> file with the one you downloaded.</li>
-            <li>Make sure the file is named exactly <code>unlocks.txt</code> and is located in <code>%appdata%/Anymaker/</code>.</li>
-            <li>Open the game, and enjoy your new items!</li>
-            <li>You CANNOT share the encrypted unlocks.txt with other people! It's tied to your Steam ID.</li>
         </ol>
         <small><b>Note:</b> by default, items matching "<i>Decorative,Building,Furniture,Clothing</i>" are not included! You need to remove the exclusions to add them.</small>
     </div>
@@ -159,7 +205,7 @@
     </div>
 
     <footer class="site-footer">
-        <p>You can find the source code for this project on <a href="https://github.com/Hakorr/AnyUnlocker" target="_blank" rel="noopener noreferrer">GitHub</a>. Created for YOU!</p>
+        <p>Source on <a href="https://github.com/Hakorr/AnyUnlocker" target="_blank" rel="noopener noreferrer">GitHub</a> | Licenced GPLv3</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
