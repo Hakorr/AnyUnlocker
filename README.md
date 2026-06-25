@@ -3,20 +3,22 @@
 > [!WARNING]
 > This may result in you getting banned or removed from testing, so use at your own risk.
 
-Unlock Anymaker vehicle items with ease. I reverse engineered the unlocks.txt so that you get your items instantly without picking them up one by one! You'll save at least 50 hours of your precious life by doing this. **[Open AnyUnlocker](https://hakorr.github.io/AnyUnlocker/)** to get started!
+Unlock Anymaker items with ease. Reverse engineered unlocks.txt lets you unlock your items instantly without picking them up one by one!
 
-![Loot](media/loot2.png)
+<img width="1323" height="921" alt="image" src="https://github.com/user-attachments/assets/a6d2657b-91d9-4897-bab2-88468a1c2c61" />
+
+### [Open AnyUnlocker](https://hakorr.github.io/AnyUnlocker/) to get started!
+
+## Doesn't this brea-...
 
 It's ethical to unlock parts you could normally get in gameplay anyway, since it's just saving time. I don't know why Geometa expects people to have unlimited time, skilled engineers could give good bug reports, but won't grind 50+ hours just to start experimenting. I just want to build stuff, and forcing survival in "creative" sucks. Many, many people agree with me.
 
-## Some items are missing
+## Easy filtering of items
 
-I know this, please contribute to the code and help me! I won't promise updates, Anymaker is a work-in-progress game and might result in the save file format changing, or items being removed/added. This was developed during the alpha/beta testing phase. The full game might break AnyUnlocker.
+<img width="914" height="718" alt="image" src="https://github.com/user-attachments/assets/1e6c14ca-f836-413a-a664-7c4723667476" />
 
-## Legal mumbo-jumbo
+---
 
-AnyUnlocker is an unofficial community-made tool. It is not affiliated with, endorsed by, sponsored by, or otherwise associated with Anymaker, Geometa, or their respective owners. This tool is provided for modding, educational, and archival purposes only.
-
-Favicon by icons8.com.
+AnyUnlocker is an unofficial community-made tool. It is not affiliated with, endorsed by, sponsored by, or otherwise associated with Anymaker, Geometa, or their respective owners. This tool is provided for modding, educational, and archival purposes only. Favicon by icons8.com.
 
 ![Loot](media/loot.png)
