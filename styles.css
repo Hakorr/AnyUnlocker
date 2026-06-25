@@ -316,7 +316,7 @@ h1 a {
     background-color: rgb(255 188 121 / 5%);
     padding: 10px 20px 20px 20px;
     margin: 10px;
-    border: 1px solid orange;
+    border: 1px solid #5b5b5b;
     border-radius: 4px;
 }
 .warning-box h5 {

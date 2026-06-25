@@ -474,19 +474,23 @@ async function initAndShowPicker() {
 
         renderItemList(allItems, searchFilter.value);
 
-        setStatus('Loaded map! Select items to add.');
+        setStatus('Loaded map! Select items to add. ⸜(｡˃ ᵕ ˂ )⸝♡');
         setProgress('');
         pickerSection.style.display = 'block';
         downloadSection.classList.remove('hidden');
 
         bgMusic.volume = 0.1;
         bgMusic.play();
-        welcomeVocal.volume = 0.6;
-        welcomeVocal.play();
+ 
+        setTimeout(() => {
+            welcomeVocal.volume = 0.8;
+            welcomeVocal.playbackRate = 0.85;
+            welcomeVocal.play();
+        }, 100);
 
         setTimeout(() => {
             bgMusic.volume = 0.5;
-        }, 2000);
+        }, 2700);
     } catch (err) {
         console.error(err);
         setStatus('Error: ' + err.message, true);

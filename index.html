@@ -28,8 +28,8 @@
     </div>
 
     <div class="section" id="main-menu">
-        <button id="load-map-button">Load map & Unlock items</button>
-        <button id="unlocks-tool-btn">Unlocks.txt Tools</button>
+        <button id="load-map-button">Load map & Unlock items ദ്ദി◝ ⩊ ◜.ᐟ</button>
+        <button id="unlocks-tool-btn">Decoding Tools</button>
         <button id="clear-cache-btn">Clear Data</button>
     </div>
 
@@ -63,7 +63,6 @@
         <p>Selected: <span id="selected-count">0</span> items</p>
 
         <div class="warning-box">
-            <h5>☝️🤓 HOLD ON! Stop riiiight theereeeee! Before you continue...</h5>
             <div id="tier-stats" class="tier-stats"></div>
             <p>
             Make sure no item tier exceeds its limit. These values are reported to the developers (by the game, not us obviously), and exceeding them may trigger detection, resulting in removal from testing. These limits are currently known to cause the “fish” detection event if violated.<br><br>
@@ -98,6 +97,35 @@
         <small>& Join the discussion on <a href="https://www.reddit.com/r/AnyMaker/comments/1u7smcj/how_to_unlock_all_items_heres_how/" target="_blank" rel="noopener noreferrer">Reddit</a>!</small>
     </div>
 
+    <div class="section instruction-box hidden" id="map-instructions">
+        <h3>Installation Instructions</h3>
+        <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
+        <ol>
+            <li>FULLY CLOSE YOUR GAME!</li>
+            <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
+            <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
+            <li>Open or create <code>/saves</code> folder.</li>
+            <li>Extract/unzip the downloaded <code>creativeLootSave_unzip_me.zip</code> to the <code>/saves</code> folder.</li>
+            <li>You should see a <code>creativeLootSave</code> folder in the <code>Anymaker/saves/</code> directory.</li>
+            <li>Launch the game, load the <b>creativeLootSave</b> world, and go pick up your items!</li>
+        </ol>
+        <small><b>Note:</b> by default, items matching "<i>Tier -1, Decorative, Building, Furniture or Clothing</i>" are not included! You need to remove the exclusions to add them. Tier -1 is most likely detected, so avoid unlocking items that are tier -1. Such items cannot be unlocked legitimately and may result in your testing access being revoked. You've been warned!</small>
+    </div>
+
+    <div class="section instruction-box hidden" id="crypto-instructions">
+        <h3>Installation Instructions</h3>
+        <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
+        <ol>
+            <li>FULLY CLOSE YOUR GAME!</li>
+            <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
+            <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
+            <li>Replace the <code>unlocks.txt</code> file with the one you downloaded.</li>
+            <li>Make sure the file is named exactly <code>unlocks.txt</code> and is located in <code>%appdata%/Anymaker/</code>.</li>
+            <li>Open the game, and enjoy your new items!</li>
+        </ol>
+        <small><b>Note:</b> by default, items matching "<i>Tier -1, Decorative, Building, Furniture or Clothing</i>" are not included! You need to remove the exclusions to add them. Tier -1 is most likely detected, so avoid unlocking items that are tier -1. Such items cannot be unlocked legitimately and may result in your testing access being revoked. You've been warned! You CANNOT share the unlocks.txt with other people! It's tied to your Steam ID.</small>
+    </div>
+
     <div class="section hidden" id="unlocks-tools-section">
         <h3>Encode & Decode Unlocks.txt</h3>
 
@@ -130,37 +158,8 @@
         <small id="included-items-text"></small>
     </div>
 
-    <div class="section instruction-box hidden" id="map-instructions">
-        <h3>Installation Instructions</h3>
-        <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
-        <ol>
-            <li>FULLY CLOSE YOUR GAME!</li>
-            <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
-            <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
-            <li>Open or create <code>/saves</code> folder.</li>
-            <li>Extract/unzip the downloaded <code>creativeLootSave_unzip_me.zip</code> to the <code>/saves</code> folder.</li>
-            <li>You should see a <code>creativeLootSave</code> folder in the <code>Anymaker/saves/</code> directory.</li>
-            <li>Launch the game, load the <b>creativeLootSave</b> world, and go pick up your items!</li>
-        </ol>
-        <small><b>Note:</b> by default, items matching "<i>Tier -1, Decorative, Building, Furniture or Clothing</i>" are not included! You need to remove the exclusions to add them. Tier -1 is most likely detected, so avoid unlocking items that are tier -1. Such items cannot be unlocked legitimately and may result in your testing access being revoked. You've been warned!</small>
-    </div>
-
-    <div class="section instruction-box hidden" id="crypto-instructions">
-        <h3>Installation Instructions</h3>
-        <small><b>Note:</b> If you've had fish fly to your face before (or tried other unlocking methods), delete the game & <code>%appdata%/Anymaker</code> folder before anything else!</small>
-        <ol>
-            <li>FULLY CLOSE YOUR GAME!</li>
-            <li>Press <kbd>WIN KEY</kbd> + <kbd>R</kbd> on your keyboard to open the Run dialog.</li>
-            <li>Type <code>%appdata%/Anymaker</code> and hit <kbd>Enter</kbd>.</li>
-            <li>Replace the <code>unlocks.txt</code> file with the one you downloaded.</li>
-            <li>Make sure the file is named exactly <code>unlocks.txt</code> and is located in <code>%appdata%/Anymaker/</code>.</li>
-            <li>Open the game, and enjoy your new items!</li>
-        </ol>
-        <small><b>Note:</b> by default, items matching "<i>Tier -1, Decorative, Building, Furniture or Clothing</i>" are not included! You need to remove the exclusions to add them. Tier -1 is most likely detected, so avoid unlocking items that are tier -1. Such items cannot be unlocked legitimately and may result in your testing access being revoked. You've been warned! You CANNOT share the unlocks.txt with other people! It's tied to your Steam ID.</small>
-    </div>
-
     <footer class="site-footer">
-        <p>You can find the source code for this project on <a href="https://github.com/Hakorr/AnyUnlocker" target="_blank" rel="noopener noreferrer">GitHub</a>. Created for engineers.</p>
+        <p>You can find the source code for this project on <a href="https://github.com/Hakorr/AnyUnlocker" target="_blank" rel="noopener noreferrer">GitHub</a>. Created for YOU!</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
