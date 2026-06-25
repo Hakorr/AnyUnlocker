@@ -83,9 +83,10 @@ const dungeonFilenames = [
     'dungeon_0_static.json'
 ];
 const tileToModify = 'tile_101_125_0_level_3.json';
-const selectedIds = new Set(JSON.parse(localStorage.getItem('selectedIds') || '[]'));
+const selectedItemKeys = new Set(JSON.parse(localStorage.getItem('selectedItemKeys') || '[]'));
 const cachedSteamId = localStorage.getItem('steamId64');
-const itemById = new Map();
+const itemByKey = new Map();
+const paintCount = 85; // i, so 84+1=85
 
 let defsJson = null;
 let clothingJson = null;
@@ -147,16 +148,25 @@ function findItemNamesFromCompDefs(jsonObj, excludeClasses = [], isComp = true) 
         }
 
         if(typeof obj.id === 'string') {
-            console.log('Found item:', `${isComp ? '[Vehicle Defs]' : '[Inventory Defs]'}`, obj);
-
-            foundComponents.push({
+            const baseItem = {
                 id: obj.id,
                 tier: typeof obj.tech_tier === 'number' ? obj.tech_tier : null,
                 category: typeof obj.category === 'string' ? obj.category : null,
                 class: typeof obj.class === 'string' ? obj.class : null,
                 loot_group: typeof obj.loot_group === 'string' ? obj.loot_group : null,
                 isComponent: isComp
-            });
+            };
+
+            if(obj.id === 'vehicle_editor_paint') {
+                for(let i = 1; i <= paintCount; i++) {
+                    foundComponents.push({
+                        ...baseItem,
+                        col: i
+                    });
+                }
+            } else {
+                foundComponents.push(baseItem);
+            }
         }
     });
 
@@ -188,7 +198,7 @@ function renderItemList(allItems, filterText = '') {
         }
 
         const row = document.createElement('div');
-        row.className = `item-row ${selectedIds.has(item.id) ? 'selected' : ''}`;
+        row.className = `item-row ${selectedItemKeys.has(getItemKey(item)) ? 'selected' : ''}`;
         row.textContent = getItemDisplayText(item);
         row.style.cursor = 'pointer';
         row.style.padding = '6px 8px';
@@ -197,14 +207,14 @@ function renderItemList(allItems, filterText = '') {
 
         row.addEventListener('mousedown', (e) => {
             isMouseDown = true;
-            shouldSelectMode = !selectedIds.has(item.id);
-            toggleSingleRowSelection(item.id, shouldSelectMode, row);
+            shouldSelectMode = !selectedItemKeys.has(getItemKey(item));
+            toggleSingleRowSelection(getItemKey(item), shouldSelectMode, row);
             e.preventDefault(); 
         });
 
         row.addEventListener('mouseenter', () => {
             if(isMouseDown) {
-                toggleSingleRowSelection(item.id, shouldSelectMode, row);
+                toggleSingleRowSelection(getItemKey(item), shouldSelectMode, row);
             }
         });
 
@@ -214,14 +224,15 @@ function renderItemList(allItems, filterText = '') {
     updateSelectedCount();
 }
 
-function toggleSingleRowSelection(id, forceState, rowElement) {
+function toggleSingleRowSelection(key, forceState, rowElement) {
     if(forceState) {
-        selectedIds.add(id);
+        selectedItemKeys.add(key);
         rowElement.classList.add('selected');
     } else {
-        selectedIds.delete(id);
+        selectedItemKeys.delete(key);
         rowElement.classList.remove('selected');
     }
+
     updateSelectedCount();
 }
 
@@ -230,7 +241,7 @@ window.addEventListener('mouseup', () => {
 });
 
 function updateSelectedCount() {
-    selectedCount.textContent = selectedIds.size;
+    selectedCount.textContent = selectedItemKeys.size;
     updateTierStats();
 }
 
@@ -241,6 +252,13 @@ function buildUnlockJson(selectedDefs) {
                 return {
                     definition_id: "vehicle_editor_add_component",
                     component_definition_id: item.id
+                };
+            }
+
+            if(item?.col) {
+                return {
+                    definition_id: item.id,
+                    "paint_index": item.col
                 };
             }
 
@@ -306,6 +324,8 @@ function buildItems(tileJson, componentDefs, cfg = {}) {
                 is_loot: true
             };
 
+            if(itemObj?.col) itemData.col = itemObj.col;
+
             console.log(`Adding inventory item (ID: ${itemObj.id})`);
         }
 
@@ -324,7 +344,7 @@ function buildItems(tileJson, componentDefs, cfg = {}) {
 }
 
 async function applyToMap() {
-    if(selectedIds.size === 0) {
+    if(selectedItemKeys.size === 0) {
         setStatus('Please select at least one item.', true);
         return;
     }
@@ -334,8 +354,8 @@ async function applyToMap() {
 
     try {
         setStatus("Hold on, I'm zipping over here...");
-        const selectedDefs = allItems.filter(item => selectedIds.has(item.id));
-        localStorage.setItem('selectedIds', JSON.stringify([...selectedIds]));
+        const selectedDefs = allItems.filter(item => selectedItemKeys.has(getItemKey(item)));
+        localStorage.setItem('selectedItemKeys', JSON.stringify([...selectedItemKeys]));
 
         const zip = new JSZip();
         
@@ -395,6 +415,33 @@ async function applyToMap() {
         console.error(err);
         setStatus('Error: ' + err.message, true);
     }
+}
+
+function mergeAllItems(vehicleComponents, clothingComponents) {
+    const itemMap = new Map();
+
+    function priority(item) {
+        return item.isComponent ? 2 : 1; // prefer vehicle defs over inventory defs
+    }
+
+    const combined = [...vehicleComponents, ...clothingComponents];
+
+    for(const item of combined) {
+        const key = getItemKey(item);
+
+        if(!itemMap.has(key)) {
+            itemMap.set(key, item);
+            continue;
+        }
+
+        const existing = itemMap.get(key);
+
+        if(priority(item) > priority(existing)) {
+            itemMap.set(key, item);
+        }
+    }
+
+    return [...itemMap.values()];
 }
 
 async function initAndShowPicker() {
@@ -467,10 +514,12 @@ async function initAndShowPicker() {
         const vehicleComponents = findItemNamesFromCompDefs(defsJson, [], true);
         const clothingComponents = findItemNamesFromCompDefs(clothingJson, [], false);
 
-        allItems = [...vehicleComponents, ...clothingComponents];
+        allItems = mergeAllItems(vehicleComponents, clothingComponents);
 
-        itemById.clear();
-        allItems.forEach(item => itemById.set(item.id, item));
+        itemByKey.clear();
+        allItems.forEach(item => {
+            itemByKey.set(getItemKey(item), item);
+        });
 
         renderItemList(allItems, searchFilter.value);
 
@@ -509,8 +558,8 @@ function updateTierStats() {
         "none": 0
     };
 
-    for(const id of selectedIds) {
-        const item = itemById.get(id);
+    for(const key of selectedItemKeys) {
+        const item = itemByKey.get(key);
         if(!item) continue;
 
         const tier = item.tier;
@@ -583,6 +632,10 @@ function getItemDisplayText(item) {
     if(tags.length === 0 && item.class !== null && item.class !== undefined && item.class.trim() !== '') {
         tags.push(item.class);
     }
+
+    if(item.id === "vehicle_editor_paint" && item.col != null) {
+        displayStr += ` C${item.col} `;
+    }
     
     const uniqueTags = [...new Set(tags)];
     
@@ -600,13 +653,19 @@ function getItemDisplayText(item) {
     return displayStr;
 }
 
+function getItemKey(item) {
+    return item.col != null
+        ? `${item.id}|${item.col}`
+        : item.id;
+}
+
 function showIncludedItems() {
     includedItemsSection.classList.remove('hidden')
-    includedItemsText.innerText = [...selectedIds].join(", ");
+    includedItemsText.innerText = [...selectedItemKeys].join(", ");
 }
 
 excludeFilter.addEventListener('input', (e) => {
-    selectedIds.clear();
+    selectedItemKeys.clear();
     renderItemList(allItems, searchFilter.value);
     updateSelectedCount();
     localStorage.setItem('excludeFilterValue', e.target.value);
@@ -629,7 +688,8 @@ btnSelectAll.addEventListener('click', () => {
     
     allItems.forEach(item => {
         const displayStr = getItemDisplayText(item).toLowerCase();
-        
+        const key = getItemKey(item);
+
         let matchesSearch = true;
         if(searchTerms.length > 0) {
             matchesSearch = searchTerms.some(term => displayStr.includes(term));
@@ -639,9 +699,9 @@ btnSelectAll.addEventListener('click', () => {
         if(excludeTerms.length > 0) {
             matchesExclude = excludeTerms.some(term => displayStr.includes(term));
         }
-        
+
         if(matchesSearch && !matchesExclude) {
-            selectedIds.add(item.id);
+            selectedItemKeys.add(key);
         }
     });
     
@@ -650,13 +710,13 @@ btnSelectAll.addEventListener('click', () => {
 });
 
 btnClearAll.addEventListener('click', () => {
-    selectedIds.clear();
+    selectedItemKeys.clear();
     renderItemList(allItems, searchFilter.value);
     updateSelectedCount();
 });
 
 btnApplyCrypto.addEventListener('click', async () => {
-    if(selectedIds.size === 0) {
+    if(selectedItemKeys.size === 0) {
         setStatus('Please select at least one item.', true);
         return;
     }
@@ -716,8 +776,8 @@ downloadBtn.addEventListener('click', () => {
 function encryptAndDownload(key) {
     setStatus("Hold on, I'm encrypting over here...");
 
-    const selectedDefs = allItems.filter(item => selectedIds.has(item.id));
-    localStorage.setItem('selectedIds', JSON.stringify([...selectedIds]));
+    const selectedDefs = allItems.filter(item => selectedItemKeys.has(getItemKey(item)));
+    localStorage.setItem('selectedItemKeys', JSON.stringify([...selectedItemKeys]));
 
     unlockJsonText = encode(JSON.stringify(buildUnlockJson(selectedDefs)), key);
 
@@ -834,3 +894,5 @@ function toolInputChanged() {
 toolInput.addEventListener('input', (event) => {
     toolInputChanged();
 });
+
+// Time for refactoring... some other day, or never because this project is short-lived anyway!

@@ -356,3 +356,20 @@ h1 a {
     color: #ff4d4d;
     margin-top: 4px;
 }
+
+#list-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#list-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#list-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+}
+
+#list-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
