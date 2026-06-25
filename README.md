@@ -19,8 +19,6 @@ It's ethical to unlock parts you could normally get in gameplay anyway, since it
 
 ---
 
-AnyUnlocker is an unofficial community-made tool. It is not affiliated with, endorsed by, sponsored by, or otherwise associated with Anymaker, Geometa, or their respective owners. This tool is provided for modding, educational, and archival purposes only.
-
-Favicon by icons8.com.
+AnyUnlocker is an unofficial community-made tool. It is not affiliated with, endorsed by, sponsored by, or otherwise associated with Anymaker, Geometa, or their respective owners. This tool is provided for modding, educational, and archival purposes only. Favicon by icons8.com.
 
 ![Loot](media/loot.png)
