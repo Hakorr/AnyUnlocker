@@ -13,6 +13,8 @@ Unlock Anymaker items with ease. Reverse engineered unlocks.txt lets you unlock 
 
 It's ethical to unlock parts you could normally get in gameplay anyway, since it's just saving time. I don't know why Geometa expects people to have unlimited time, skilled engineers could give good bug reports, but won't grind 50+ hours just to start experimenting. I just want to build stuff, and forcing survival in "creative" sucks. Many, many people agree with me.
 
+AnyUnlocker does not bypass any of the game's own restrictions. It simply gives you items you can unlock with 100 hours of legitimate gameplay.
+
 ## Easy filtering of items
 
 <img width="914" height="718" alt="image" src="https://github.com/user-attachments/assets/1e6c14ca-f836-413a-a664-7c4723667476" />
