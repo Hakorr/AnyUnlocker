@@ -15,7 +15,7 @@ AnyUnlocker does not bypass any of the game's own restrictions. It simply gives 
 
 ## Easy filtering of items
 
-<img width="914" height="718" alt="image" src="https://github.com/user-attachments/assets/1e6c14ca-f836-413a-a664-7c4723667476" />
+<img width="693" height="542" alt="image" src="https://github.com/user-attachments/assets/a5492616-01c1-40a5-b7e4-453db84441c4" />
 
 ## Select patterns
 
@@ -24,6 +24,14 @@ AnyUnlocker does not bypass any of the game's own restrictions. It simply gives 
 ## Multiple ways to unlock
 
 <img width="929" height="144" alt="image" src="https://github.com/user-attachments/assets/6508812a-ffd6-4fde-85b1-385bb221594a" />
+
+## Warning system
+
+<img width="903" height="244" alt="image" src="https://github.com/user-attachments/assets/64abecd5-9e05-4e6e-85c4-2b12da8cadd6" />
+
+## Decoder & Encoder
+
+<img width="899" height="594" alt="image" src="https://github.com/user-attachments/assets/60749115-2c2e-4080-bb36-3c26d2737335" />
 
 ---
 
