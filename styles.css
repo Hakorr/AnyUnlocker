@@ -40,6 +40,19 @@ h1 {
     flex-direction: row-reverse;
     align-items: center;
     margin-bottom: 20px;
+    animation: sway 6s ease-in-out infinite;
+    transform-origin: bottom center; 
+}
+@keyframes sway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.5deg);
+  }
+  75% {
+    transform: rotate(-0.5deg);
+  }
 }
 h3 {
     font-size: 1.25rem;
@@ -417,5 +430,22 @@ button, input, select {
 }
 
 #list-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.15);
 }
