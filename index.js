@@ -191,6 +191,10 @@ function listTileFiles() {
     return TILE_FILES.map(file => TILES_DIR + file);
 }
 
+function shouldItemHavePattern(item) {
+    return item.patterns?.length && item?.loot_group === 'clothing';
+}
+
 function findItemNamesFromCompDefs(jsonObj, excludeClasses = [], isComp = true) {
     const foundComponents = [];
     const excludedSet = new Set(excludeClasses);
@@ -245,7 +249,7 @@ function getPatternIndex(searchString) {
 }
 
 function resolvePattern(item) {
-    if(!item.patterns?.length) return null;
+    if(!shouldItemHavePattern(item)) return null;
 
     const globalPatternName = String(globalPatternSelect.value);
     const selectedPatternName = selectedPatterns[item.id];
@@ -305,7 +309,7 @@ function renderItemList(allItems, filterText = '') {
         row.style.borderBottom = '1px solid #222';
         row.style.userSelect = 'none'; 
 
-        if(item.patterns?.length) {
+        if(shouldItemHavePattern(item)) {
             const select = document.createElement('select');
 
             select.innerHTML = `
@@ -395,7 +399,7 @@ function buildUnlockJson(selectedDefs) {
 
             if(item?.col) createdItemObj['paint_index'] = item.col;
 
-            if(item.patterns?.length) {
+            if(shouldItemHavePattern(item)) {
                 const pattern = resolvePattern(item);
 
                 if(pattern !== null && pattern !== undefined)
