@@ -159,6 +159,7 @@ let isMouseDown = false;
 let shouldSelectMode = true;
 let unlockJsonText = '';
 let globalPatternValue = null;
+let lastPlayed = 0;
 
 const savedSearch = localStorage.getItem('searchFilterValue');
 if(savedSearch !== null) searchFilter.value = savedSearch;
@@ -713,6 +714,17 @@ function populateGlobalPatternDropdown() {
     }
 }
 
+function maybePlayTooManyAudio(exceeded) {
+    const MIN = 5 * 60 * 1000;
+
+    const now = Date.now();
+
+    if(exceeded && now - lastPlayed >= MIN) {
+        tooManyAudio.play();
+        lastPlayed = now;
+    }
+}
+
 function updateTierStats() {
     let exceeded = false;
 
@@ -757,7 +769,7 @@ function updateTierStats() {
         }
     }
 
-    if(exceeded) tooManyAudio.play();
+    maybePlayTooManyAudio(exceeded);
 
     const box = (label, value, limit = null) => {
         const over = limit !== null && value > limit;
