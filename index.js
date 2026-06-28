@@ -19,7 +19,6 @@ const mainMenu = document.getElementById('main-menu');
 const downloadSection = document.getElementById('download-section');
 const statusSection = document.querySelector('.status-section');
 const bgMusic = document.getElementById('bgMusic');
-const welcomeVocal = document.getElementById('welcomeVocal');
 const includedItemsText = document.getElementById('included-items-text');
 const includedItemsSection = document.getElementById('included-items-section');
 const unlockToolSection = document.getElementById('unlocks-tools-section');
@@ -31,6 +30,7 @@ const toolWarning = document.getElementById('tool-warning');
 const tierStatsEl = document.getElementById('tier-stats');
 const globalPatternSelect = document.getElementById('global-pattern-select');
 const cryptCopySection = document.getElementById('crypt-copy-section');
+const tooManyAudio = document.getElementById('tooMany1');
 
 const DEF_PATH = 'defs/vehicle_component_definitions.json';
 const CLOTHING_DEF_PATH = 'defs/inventory_definitions.json';
@@ -675,18 +675,8 @@ async function initAndShowPicker() {
         setProgress('');
         pickerSection.style.display = 'block';
 
-        bgMusic.volume = 0.1;
+        bgMusic.volume = 0.5;
         bgMusic.play();
- 
-        setTimeout(() => {
-            welcomeVocal.volume = 0.85;
-            welcomeVocal.playbackRate = 0.85;
-            welcomeVocal.play();
-        }, 100);
-
-        setTimeout(() => {
-            bgMusic.volume = 0.5;
-        }, 2700);
     } catch (err) {
         console.error(err);
         setStatus('Error: ' + err.message, true);
@@ -720,6 +710,14 @@ function populateGlobalPatternDropdown() {
 }
 
 function updateTierStats() {
+    let exceeded = false;
+
+    const max = {
+        "-1": 19,
+        "4": 20,
+        "5": 20
+    };
+
     const counts = {
         "-1": 0,
         "0": 0,
@@ -746,14 +744,20 @@ function updateTierStats() {
         }
     }
 
-    const max = {
-        "-1": 19,
-        "4": 20,
-        "5": 20
-    };
+    for(const [tier, limit] of Object.entries(max)) {
+        const current = counts[tier] ?? 0;
+
+        if(current > limit) {
+            exceeded = true;
+            break;
+        }
+    }
+
+    if(exceeded) tooManyAudio.play();
 
     const box = (label, value, limit = null) => {
         const over = limit !== null && value > limit;
+
         return `
             <div class="tier-box ${over ? 'overlimit' : ''}">
                 <div class="tier-label">${label}</div>
